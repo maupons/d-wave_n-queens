@@ -28,16 +28,17 @@ def exact_cover_bqm(problem_set, subsets):
             A list of subsets of `problem_set` used to find an exact cover.
     """
     bqm = BinaryQuadraticModel({}, {}, 0, 'BINARY')
-
+    cnt = 0
     for element in problem_set:
         bqm.offset += 1
 
         for i in range(len(subsets)):    
             if element in subsets[i]:
+                cnt +=1
                 bqm.add_variable(i, -1)
 
                 for j in range(i):         
                     if element in subsets[j]:
                         bqm.add_interaction(i, j, 2)
-
+    print(cnt)
     return bqm

@@ -1,0 +1,11 @@
+x: [['P0_AM', 'P0_PM'], ['P1_AM', 'P1_PM'], ['P2_AM', 'P2_PM'], ['P3_AM', 'P3_PM']]
+sample {'P0_AM': 0, 'P0_PM': 1, 'P1_AM': 1, 'P1_PM': 0, 'P2_AM': 0, 'P2_PM': 1, 'P3_AM': 0, 'P3_PM': 1, 'slack_c1_pump_0_0': 0, 'slack_c1_pump_1_0': 1, 'slack_c1_pump_2_0': 1, 'slack_c1_pump_3_0': 1, 'slack_c2_time_0_0': 1, 'slack_c2_time_0_1': 1, 'slack_c2_time_1_0': 0, 'slack_c2_time_1_1': 0}
+
+        AM      PM
+P0      0       1
+P1      1       0
+P2      0       1
+P3      0       1
+
+Total flow:      20
+Total cost:      135 
