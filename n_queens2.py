@@ -20,6 +20,7 @@ matplotlib.use("agg")    # must select backend before importing pyplot
 import matplotlib.pyplot as plt
 from dimod import BinaryQuadraticModel
 from dwave.system import LeapHybridSampler
+import neal
 
 from exact_cover import exact_cover_bqm
 import dwave.inspector
@@ -98,12 +99,12 @@ def n_queens(n, sampler=None):
 
     # Build BQM with only row/col constraints
     bqm = exact_cover_bqm(row_col_constraint_ids, subsets)
-    print(bqm)
+    # print(bqm)
 
     # Add diag/anti-diag constraints - duplicates are penalized.
     bqm = handle_diag_constraints(bqm, subsets, diag_constraint_ids)
-    print(type(bqm))
-    print(bqm)
+    # print(type(bqm))
+    # print(bqm)
 
     # if sampler is None:
     #     sampler = LeapHybridSampler()
@@ -114,8 +115,17 @@ def n_queens(n, sampler=None):
     # Show Inspector, detailed view of qubits and embbeding
     # dwave.inspector.show(sampleset)
 
+    sampler = neal.SimulatedAnnealingSampler()
+    sampleset = sampler.sample(bqm, num_reads=5, label=f'{n} QueensD - Simulated Annealing')
+    sample = sampleset.first.sample
+    print("Sample:",sample)
+    # for i in sample:
+    #     print(i)
+    a = [subsets[i] for i in sample if sample[i]]
+    print("a", a)
+    return a
     # return [subsets[i] for i in sample if sample[i]]
-    return list()
+    # return list()
 
 def is_valid_solution(n, solution):
     """Check that solution is valid by making sure all constraints were met.
@@ -127,9 +137,12 @@ def is_valid_solution(n, solution):
                   a queen's location.
     """
     count = Counter()
+    print(count)
 
     for queen in solution:
+        print(queen)
         count = count + Counter(queen)
+    print('c:',count)
 
     # Check row/col constraints
     for i in range(2*n):
