@@ -35,7 +35,7 @@ import neal
 from time import time
 
 
-def n_queens(n, sampler=None):
+def n_queens(n,dp,dm, sampler=None):
     """Returns a potential solution to the n-queens problem in a dictionary, where
     the keys are qubit id and value on or off
 
@@ -48,25 +48,20 @@ def n_queens(n, sampler=None):
                  3) SimulatedAnnealingSampler
     """
 
-    dp = [17,4,1,20,16,6,15,2]
-    dm = [10,-8,-4,-10,5,6,4,9,-5]
+    d = len(dp) + len(dm)
 
     bqm = BinaryQuadraticModel({}, {}, 0, 'BINARY')
     bqm.offset = 2*n
-    itr = 200
-    w = 100
-    cs = 89
+    itr = 1000
+    w = 2
+    # cs = 89
 
     for i in range(n**2):
         ri = i // n
         ci = i-n*ri
         if (ri+ci) in dp:
-            # print('i',i,'r+c',ri+ci)
-            # print('i',i,'r',ri,'c',ci,'r+c',ri+ci)
             bqm.add_variable(i, w)
         elif (ri-ci) in dm:
-            # print('i',i,'r-c',ri-ci)
-            # print('i',i,'r',ri,'c',ci,'r-c',ri-ci)
             bqm.add_variable(i, w)
         else:
             bqm.add_variable(i, -w)
@@ -90,44 +85,50 @@ def n_queens(n, sampler=None):
     # QPU
     # sampler = EmbeddingComposite(DWaveSampler())
     # sampler = EmbeddingComposite(DWaveSampler(solver=dict(topology__type='pegasus')))
-    sampler = DWaveSampler(solver=dict(topology__type='zephyr'))
-    embedded = EmbeddingComposite(sampler)
+    # sampler = DWaveSampler(solver=dict(topology__type='zephyr'))
+    # embedded = EmbeddingComposite(sampler)
     # sampler = FixedEmbeddingComposite(DWaveSampler(),embedding)
     # sampler = FixedEmbeddingComposite(DWaveSampler(solver={'qpu': True}), embedding)
     # print(DWaveSampler().properties)
     # sampleset = sampler.sample(bqm, num_reads=itr, label=f'{n} QD - QPU Fix Embbeded')
 
-    tp = sampler.properties["topology"]['type']
-    sampleset = embedded.sample(bqm, num_reads=itr, chain_strength=cs, label=f'{n} QD, w:{w}, cs:{cs}, {tp}')
+    # tp = sampler.properties["topology"]['type']
+    # sampleset = embedded.sample(bqm, num_reads=itr, chain_strength=cs, label=f'{n} QD, w:{w}, cs:{cs}, {tp}')
     # sampleset = embedded.sample(bqm, num_reads=itr, label=f'{n}Q, w:{w}, {tp}')
 
     # Hybrid Solver
-    # sampler = LeapHybridSampler()                             # Hybrid Solver
-    # sampleset = sampler.sample(bqm, label=f'{n} QD - Hybrid')
+    sampler = LeapHybridSampler()                             # Hybrid Solver
+    sampleset = sampler.sample(bqm, label=f'{n}-q; {d}-d config')
+    # print('quota_conversion_rate', sampler.properties['quota_conversion_rate'])
 
     # CPU
     # sampler = neal.SimulatedAnnealingSampler()                  # CPU
-    # sampleset = sampler.sample(bqm, num_reads=itr, label=f'{n} QD - CPU')
-    # print(sampler.properties['category'])
+    # sampleset = sampler.sample(bqm, num_reads=itr, label=f'{n}-q; {d}-d config Classical')
+    # print('category', sampler.properties['category'])
       
-
-    print(f'finished in {time()-start_time} seconds')
-    # print(sampleset.info)
+    solver_time = f'finished in {time()-start_time} seconds'
+    print(solver_time)
+    print('sampleset.info', sampleset.info)
+    # print('sampler.properties', sampler.properties)
     # sampleset_iterator = sampleset.samples(num_iter)
-    f = open("sampleset.txt", "w")
-    for sample in sampleset:
-        # print(sample)
-        f.write(str(sample)+'\n')
-    f.close()
-
-    f = open("sampleset2.txt", "w")
-    f.write(str(sampleset))
-    f.close()
+    # f = open("sampleset.txt", "w")
+    # for sample in sampleset:
+    #     # print(sample)
+    #     f.write(str(sample)+'\n')
+    # f.close()
 
     sample = sampleset.first.sample
     print("Sample:\n", sample)
+    f = open("outHybrid.txt", "a")
+    f.write(f'{n}-q; {d}-d config\n')
+    f.write(str(sample)+'\n')
+    f.write(solver_time + '\n')
+    f.write(str(sampleset.info)+'\n')
+    f.close()
+
+    
     # Inspect
-    dwave.inspector.show(sampleset)
+    # dwave.inspector.show(sampleset)
     return sample,dp,dm
 
 
@@ -246,8 +247,8 @@ def plot_chessboard(n, queens, dp, dm):
             else:
                 dm_dict[y-x][0].append(x)
                 dm_dict[y-x][1].append(y)
-    print(dp_dict)
-    print(dm_dict)
+    # print(dp_dict)
+    # print(dm_dict)
 
     for e in dp_dict:
         if len(dp_dict[e][0]) == 1:
@@ -269,19 +270,22 @@ def plot_chessboard(n, queens, dp, dm):
 
 if __name__ == "__main__":
 
-    n = 8
-
-    if n > 20:
-        print("Solution image is large and may be difficult to view.")
-        print("Plot settings in plot_chessboard() may need adjusting.")
+    n = 23
+    dp = [39,42,24,12,1,40,20,11,7,27,10,44,38,0]
+    dm = [22,16,19,1,-20,-4,14,13,-22,-15,-11,-1,5,-17,-18,18]
 
     print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
-    solution,dp,dm = n_queens(n)
+    solution,dp,dm = n_queens(n,dp,dm)
 
     if is_valid_solution(n, solution):
-        print("Solution is valid.")
+        write = "Solution is valid."
     else:
-        print("Solution is invalid.")
+        write = "Solution is invalid."
+    
+    print(write)
+    f = open("outHybrid.txt", "a")
+    f.write(write+'\n\n')
+    f.close()
 
     file_name = plot_chessboard(n, solution,dp,dm)
     print("Chessboard created. See: {}".format(file_name))
