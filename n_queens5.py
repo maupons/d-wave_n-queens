@@ -98,12 +98,12 @@ def n_queens(n,dp,dm, sampler=None):
 
     # Hybrid Solver
     sampler = LeapHybridSampler()                             # Hybrid Solver
-    sampleset = sampler.sample(bqm, label=f'{n}-q; {d}-d config')
+    # sampleset = sampler.sample(bqm, label=f'{n}-q; {d}-d config')
     # print('quota_conversion_rate', sampler.properties['quota_conversion_rate'])
 
     # CPU
-    # sampler = neal.SimulatedAnnealingSampler()                  # CPU
-    # sampleset = sampler.sample(bqm, num_reads=itr, label=f'{n}-q; {d}-d config Classical')
+    sampler = neal.SimulatedAnnealingSampler()                  # CPU
+    sampleset = sampler.sample(bqm, num_reads=itr, label=f'{n}-q; {d}-d config Classical')
     # print('category', sampler.properties['category'])
       
     solver_time = f'finished in {time()-start_time} seconds'
@@ -270,9 +270,11 @@ def plot_chessboard(n, queens, dp, dm):
 
 if __name__ == "__main__":
 
-    n = 23
-    dp = [39,42,24,12,1,40,20,11,7,27,10,44,38,0]
-    dm = [22,16,19,1,-20,-4,14,13,-22,-15,-11,-1,5,-17,-18,18]
+    n = 50
+    # dp = [39,42,24,12,1,40,20,11,7,27,10,44,38,0]
+    # dm = [22,16,19,1,-20,-4,14,13,-22,-15,-11,-1,5,-17,-18,18]
+    dp = []
+    dm = []
 
     print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
     solution,dp,dm = n_queens(n,dp,dm)
