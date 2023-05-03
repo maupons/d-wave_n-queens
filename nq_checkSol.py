@@ -35,105 +35,6 @@ import neal
 from time import time
 
 
-def n_queens(n,dp,dm, sampler=None):
-    """Returns a potential solution to the n-queens problem in a dictionary, where
-    the keys are qubit id and value on or off
-
-    Args:
-        n: Number of queens to place.
-
-        sampler: A binary quadratic model sampler. 
-        Can use: 1) LeapHybridSampler
-                 2) DWaveSampler - QPU
-                 3) SimulatedAnnealingSampler
-    """
-
-    d = len(dp) + len(dm)
-
-    bqm = BinaryQuadraticModel({}, {}, 0, 'BINARY')
-    bqm.offset = 2*n
-    itr = 1000
-    w = 2
-    # cs = 89
-
-    for i in range(n**2):
-        ri = i // n
-        ci = i-n*ri
-        if (ri+ci) in dp:
-            bqm.add_variable(i, w)
-        elif (ri-ci) in dm:
-            bqm.add_variable(i, w)
-        else:
-            bqm.add_variable(i, -w)
-            
-        for j in range(i):
-            rj = j // n
-            cj = j-n*rj
-            if rj == ri:
-                bqm.add_interaction(i, j, w)
-            if cj == ci:
-                bqm.add_interaction(i, j, w)
-            if abs(ri-rj) == abs(ci-cj):
-                bqm.add_interaction(i, j, w)
-    # print(bqm)
-    
-
-    print('solver started...')
-    start_time = time()
-
-    
-    # QPU
-    sampler = EmbeddingComposite(DWaveSampler())
-    embedding_time = f'embedded in {time()-start_time} seconds'
-    # sampler = EmbeddingComposite(DWaveSampler(solver=dict(topology__type='pegasus')))
-    # sampler = DWaveSampler(solver=dict(topology__type='zephyr'))
-    # embedded = EmbeddingComposite(sampler)
-    # sampler = FixedEmbeddingComposite(DWaveSampler(),embedding)
-    # sampler = FixedEmbeddingComposite(DWaveSampler(solver={'qpu': True}), embedding)
-    # print(DWaveSampler().properties)
-    sampleset = sampler.sample(bqm, num_reads=itr, label=f'{n} QD - QPU Fix Embbeded')
-
-    # tp = sampler.properties["topology"]['type']
-    # sampleset = embedded.sample(bqm, num_reads=itr, chain_strength=cs, label=f'{n} QD, w:{w}, cs:{cs}, {tp}')
-    # sampleset = embedded.sample(bqm, num_reads=itr, label=f'{n}Q, w:{w}, {tp}')
-
-    # Hybrid Solver
-    # sampler = LeapHybridSampler()                             # Hybrid Solver
-    # sampleset = sampler.sample(bqm, label=f'{n}-q; {d}-d config')
-    # print('quota_conversion_rate', sampler.properties['quota_conversion_rate'])
-
-    # CPU
-    # sampler = neal.SimulatedAnnealingSampler()                  # CPU
-    # sampleset = sampler.sample(bqm, num_reads=itr, label=f'{n}-q; {d}-d config Classical')
-    # print('category', sampler.properties['category'])
-      
-    solver_time = f'finished in {time()-start_time} seconds'
-    print(solver_time)
-    print('sampleset.info', sampleset.info)
-    # print('sampler.properties', sampler.properties)
-    # sampleset_iterator = sampleset.samples(num_iter)
-    # f = open("sampleset.txt", "w")
-    # for sample in sampleset:
-    #     # print(sample)
-    #     f.write(str(sample)+'\n')
-    # f.close()
-
-    sample = sampleset.first.sample
-    print("Sample:\n", sample)
-    f = open("logsQPU.txt", "a")
-    f.write(f'{n}-q; {d}-d config\n')
-    f.write(embedding_time + '\n')
-    f.write(str(sample)+'\n')
-    f.write(solver_time + '\n')
-    f.write(str(sampleset.info)+'\n')
-    f.close()
-
-    
-    # Inspect
-    dwave.inspector.show(sampleset)
-    return sample,dp,dm
-
-
 def is_valid_solution(n, solution):
     """Check that solution is valid by making sure all constraints were met.
 
@@ -179,21 +80,6 @@ def is_valid_solution(n, solution):
         if sum_col != 1:
             print(f"Column {i} has {sum_col} queens.")
             return False
-    
-    # I think this doesnt work becuase I cant tell if all n queens are in same row or col
-    # print(sum(board))
-    # print(sum(sum(board)))
-    # return False if sum(sum(board)) != n else True
-
-    # Check diag/anti-diag constraints
-    # print(ldp)
-    # print(ldm)
-    # if len(ldp) != len(set(ldp)):
-    #     print(f"A diagonal in D+ set has more than 1 queen.")
-    #     return False
-    # elif len(ldm) != len(set(ldm)):
-    #     print(f"A diagonal in D- set has more than 1 queen.")
-    #     return False
 
     return True
 
@@ -272,14 +158,12 @@ def plot_chessboard(n, queens, dp, dm):
 
 if __name__ == "__main__":
 
-    n = 6
-    # dp = [39,42,24,12,1,40,20,11,7,27,10,44,38,0]
-    # dm = [22,16,19,1,-20,-4,14,13,-22,-15,-11,-1,5,-17,-18,18]
+    n = 4
     dp = []
     dm = []
+    solution = {0: 0, 1: 1, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 1, 8: 1, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 1, 15: 0}
 
     print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
-    solution,dp,dm = n_queens(n,dp,dm)
     print('***********')
     print(solution)
     print('*****//////////')
@@ -288,11 +172,7 @@ if __name__ == "__main__":
         write = "Solution is valid."
     else:
         write = "Solution is invalid."
-    
-    print(write)
-    f = open("outHybrid.txt", "a")
-    f.write(write+'\n\n')
-    f.close()
 
+    print(write)
     file_name = plot_chessboard(n, solution,dp,dm)
     print("Chessboard created. See: {}".format(file_name))

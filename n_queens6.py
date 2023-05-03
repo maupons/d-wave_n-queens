@@ -33,6 +33,8 @@ from dwave.system import DWaveSampler, EmbeddingComposite, FixedEmbeddingComposi
 import dwave.inspector
 import neal
 from time import time
+import sys
+import datetime as dt
 
 
 def n_queens(n,dp,dm, sampler=None):
@@ -51,8 +53,8 @@ def n_queens(n,dp,dm, sampler=None):
     d = len(dp) + len(dm)
 
     bqm = BinaryQuadraticModel({}, {}, 0, 'BINARY')
-    bqm.offset = 2*n
-    itr = 1000
+    # bqm.offset = 2*n
+    itr = 10
     w = 2
     # cs = 89
 
@@ -75,62 +77,101 @@ def n_queens(n,dp,dm, sampler=None):
                 bqm.add_interaction(i, j, w)
             if abs(ri-rj) == abs(ci-cj):
                 bqm.add_interaction(i, j, w)
-    # print(bqm)
-    
 
+    print('bqm.variables', bqm.variables)
     print('solver started...')
     start_time = time()
-
     
     # QPU
     sampler = EmbeddingComposite(DWaveSampler())
-    embedding_time = f'embedded in {time()-start_time} seconds'
-    # sampler = EmbeddingComposite(DWaveSampler(solver=dict(topology__type='pegasus')))
-    # sampler = DWaveSampler(solver=dict(topology__type='zephyr'))
-    # embedded = EmbeddingComposite(sampler)
-    # sampler = FixedEmbeddingComposite(DWaveSampler(),embedding)
-    # sampler = FixedEmbeddingComposite(DWaveSampler(solver={'qpu': True}), embedding)
-    # print(DWaveSampler().properties)
-    sampleset = sampler.sample(bqm, num_reads=itr, label=f'{n} QD - QPU Fix Embbeded')
-
-    # tp = sampler.properties["topology"]['type']
-    # sampleset = embedded.sample(bqm, num_reads=itr, chain_strength=cs, label=f'{n} QD, w:{w}, cs:{cs}, {tp}')
-    # sampleset = embedded.sample(bqm, num_reads=itr, label=f'{n}Q, w:{w}, {tp}')
+    embedding_time = time()-start_time
+    sampleset = sampler.sample(bqm, num_reads=itr, label=f'n {n}, time {start_time}')
 
     # Hybrid Solver
-    # sampler = LeapHybridSampler()                             # Hybrid Solver
+    # sampler = LeapHybridSampler()
     # sampleset = sampler.sample(bqm, label=f'{n}-q; {d}-d config')
     # print('quota_conversion_rate', sampler.properties['quota_conversion_rate'])
 
     # CPU
-    # sampler = neal.SimulatedAnnealingSampler()                  # CPU
+    # sampler = neal.SimulatedAnnealingSampler()
     # sampleset = sampler.sample(bqm, num_reads=itr, label=f'{n}-q; {d}-d config Classical')
-    # print('category', sampler.properties['category'])
-      
-    solver_time = f'finished in {time()-start_time} seconds'
-    print(solver_time)
-    print('sampleset.info', sampleset.info)
-    # print('sampler.properties', sampler.properties)
-    # sampleset_iterator = sampleset.samples(num_iter)
-    # f = open("sampleset.txt", "w")
-    # for sample in sampleset:
-    #     # print(sample)
-    #     f.write(str(sample)+'\n')
-    # f.close()
+    
+    print('sampleset.done', sampleset.done())
+    cnt = 0
+    while not sampleset.done():
+        cnt = cnt + 1
+        continue
+    print('wait itr: ', cnt)
+    print('sampleset.done', sampleset.done())
+    if sampleset.done():
+        solver_time = time()-start_time
+
+    print('py_time', solver_time)
+    # time_format = "%Y-%m-%d %H:%M:%S.%f"
+    # time_received = dt.datetime.strptime(str(sampleset.info)[:-6], time_format)
+    # time_solved = dt.datetime.strptime(str(sampleset.time_solved)[:-6], time_format)
+    # service_time = time_solved - time_received
+    # print('service_time', service_time)
+    # print('time received', str(sampleset.time_received))
+
+    # Extract run info
+    print('sampleset.info:\n', sampleset.info)
+    embedding = sampleset.info['embedding_context']['embedding']
+    chain_break_method = sampleset.info['embedding_context']['chain_break_method'].strip()
+    chain_strength = sampleset.info['embedding_context']['chain_strength']
+    n_vars = len(embedding.keys())
+    n_qb = sum(len(chain) for chain in embedding.values())
+    print(f"Number of logical variables: {n_vars}")
+    print(f"Number of physical qubits used in embedding: {n_qb}")
+
+
+    f1 = open(f"data/n{n}_sols_{start_time}.txt", "w")
+    for sample in sampleset:
+        f1.write(str(sample)+'\n')
+    f1.close()
+
+    f2 = open(f"data/n{n}_sampleset_{start_time}.txt", "w")
+    f2.write(str(sampleset))
+    f2.close()
+
+    df = sampleset.to_pandas_dataframe()
+    # df.to_csv(f"data/n{n}_samplesetPD_{start_time}.csv")
+    f22 = open(f"data/n{n}_samplesetPD_{start_time}.txt", "w")
+    f22.write(df.to_string())
+    f22.close()
+    # print('Columns:\n', df.columns)
+    # print('describe:\n', df.describe())
+    # print('mean\n:', df.mean())
+    print('\nSolutions:\n', df[df["energy"] == -2*n])
+    nsols = df[df["energy"] == -2*n]['num_occurrences'].sum()
+    print('nsols ', nsols)
+    psol = nsols / itr
 
     sample = sampleset.first.sample
-    print("Sample:\n", sample)
-    f = open("logsQPU.txt", "a")
-    f.write(f'{n}-q; {d}-d config\n')
-    f.write(embedding_time + '\n')
-    f.write(str(sample)+'\n')
-    f.write(solver_time + '\n')
-    f.write(str(sampleset.info)+'\n')
-    f.close()
+    print("Picked Solution:\n", sample)
+    f3 = open("data/logsQPU.txt", "a")
+    f3.write(f'{n}-q; {d}-d config\n')
+    f3.write('embedding_time ' + str(embedding_time) + '\n')
+    f3.write(str(sample)+'\n')
+    f3.write('py_time ' + str(solver_time) + '\n')
+    f3.write(str(sampleset.info)+'\n')
+    f3.close()
+
+    f4 = open("data/timeQPU.txt", "a")
+    line = f'{n}   {d}   {n_vars}   {n_qb}   {chain_break_method}\
+           {chain_strength}   {itr}   {psol}   {embedding_time*10**6}   {solver_time*10**6}'
+    for v in sampleset.info["timing"]:
+        line = line + '   ' + str(sampleset.info["timing"][v])
+    print('time data', line)
+    f4.write(line + '\n')
+    f4.close()
+
+    print('************')
+    print(sampleset)
 
     
     # Inspect
-    dwave.inspector.show(sampleset)
+    # dwave.inspector.show(sampleset)
     return sample,dp,dm
 
 
@@ -272,7 +313,7 @@ def plot_chessboard(n, queens, dp, dm):
 
 if __name__ == "__main__":
 
-    n = 6
+    n = int(sys.argv[1])
     # dp = [39,42,24,12,1,40,20,11,7,27,10,44,38,0]
     # dm = [22,16,19,1,-20,-4,14,13,-22,-15,-11,-1,5,-17,-18,18]
     dp = []
@@ -280,19 +321,16 @@ if __name__ == "__main__":
 
     print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
     solution,dp,dm = n_queens(n,dp,dm)
-    print('***********')
-    print(solution)
-    print('*****//////////')
 
     if is_valid_solution(n, solution):
         write = "Solution is valid."
     else:
         write = "Solution is invalid."
-    
     print(write)
-    f = open("outHybrid.txt", "a")
-    f.write(write+'\n\n')
+
+    f = open("data/logsQPU.txt", "a")
+    f.write(write +'\n\n')
     f.close()
 
-    file_name = plot_chessboard(n, solution,dp,dm)
-    print("Chessboard created. See: {}".format(file_name))
+    # file_name = plot_chessboard(n, solution,dp,dm)
+    # print("Chessboard created. See: {}".format(file_name))

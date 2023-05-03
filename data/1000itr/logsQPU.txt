@@ -1,0 +1,18 @@
+4-q; 0-d config
+embedded in 3.2967166900634766 seconds
+{0: 0, 1: 0, 2: 1, 3: 0, 4: 1, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 1, 12: 0, 13: 1, 14: 0, 15: 0}
+finished in 3.5855612754821777 seconds
+{'timing': {'qpu_sampling_time': 147000.0, 'qpu_anneal_time_per_sample': 20.0, 'qpu_readout_time_per_sample': 106.46, 'qpu_access_time': 162758.77, 'qpu_access_overhead_time': 1289.23, 'qpu_programming_time': 15758.77, 'qpu_delay_time_per_sample': 20.54, 'total_post_processing_time': 2099.0, 'post_processing_overhead_time': 2099.0}, 'problem_id': 'd065e825-f8c5-4ad7-b3ad-fa88c829a0a6', 'problem_label': 'n 4, time 1682361667.1756716', 'embedding_context': {'embedding': {1: (2675, 3959), 0: (2705, 2706), 2: (2660, 3974), 3: (3884, 2629), 4: (3943, 3944), 5: (4109, 2780), 6: (2720, 2721), 7: (2690, 3989), 8: (2615, 4004), 9: (2736, 3839, 2735), 10: (2765, 3824, 2764), 11: (3899, 2614), 12: (2645, 4019), 13: (2751, 2750), 14: (2840, 3913, 3914), 15: (2779, 3928, 3929)}, 'chain_break_method': 'majority_vote', 'embedding_parameters': {}, 'chain_strength': 2.179120350049533}, 'warnings': []}
+Solution is valid.
+
+5-q; 0-d config
+5-q; 0-d config
+embedding_time1.873795747756958
+{0: 0, 1: 0, 2: 0, 3: 1, 4: 0, 5: 0, 6: 1, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 1, 15: 0, 16: 0, 17: 1, 18: 0, 19: 0, 20: 1, 21: 0, 22: 0, 23: 0, 24: 0}
+py_time2.07439923286438
+{'beta_range': [0.046209812037329684, 9.210340371976184], 'beta_schedule_type': 'geometric'}
+5-q; 0-d config
+embedding_time1.8505518436431885
+{0: 0, 1: 0, 2: 0, 3: 0, 4: 1, 5: 0, 6: 1, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 1, 14: 0, 15: 1, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 1, 23: 0, 24: 0}
+py_time2.051406145095825
+{'beta_range': [0.046209812037329684, 9.210340371976184], 'beta_schedule_type': 'geometric'}

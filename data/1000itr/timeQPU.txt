@@ -1,0 +1,2 @@
+n   d   embedding_time   py_time   qpu_sampling_time   qpu_anneal_time_per_sample   qpu_readout_time_per_sample   qpu_access_time   qpu_access_overhead_time   qpu_programming_time   qpu_delay_time_per_sample   total_post_processing_time   post_processing_overhead_time
+4   0   3.2967166900634766   3.5855612754821777   147000.0    20.0    106.46 162758.77    1289.23   15758.77   20.54   2099.0   2099.0
