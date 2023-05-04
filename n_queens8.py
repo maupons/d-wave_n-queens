@@ -78,8 +78,7 @@ def n_queens(n,dp,dm, sampler=None):
             if abs(ri-rj) == abs(ci-cj):
                 bqm.add_interaction(i, j, w)
 
-    # print('bqm.variables', bqm.variables)
-    print('solver started...')
+    print(f'solver started with {itr} reads...')
     start_time = time()
     
     # QPU
@@ -96,6 +95,8 @@ def n_queens(n,dp,dm, sampler=None):
     # sampler = neal.SimulatedAnnealingSampler()
     # sampleset = sampler.sample(bqm, num_reads=itr, label=f'{n}-q; {d}-d config Classical')
     
+    py_time = time()-start_time
+    print('py_time', py_time)
     print('sampleset.done', sampleset.done())
     cnt = 0
     while not sampleset.done():
@@ -104,11 +105,11 @@ def n_queens(n,dp,dm, sampler=None):
     print('wait itr: ', cnt)
     print('sampleset.done', sampleset.done())
     if sampleset.done():
-        py_time = time()-start_time
-    print('py_time', py_time)
+        done_time = time()-start_time
+    print('done_time', done_time)
 
     # Extract run info
-    print('sampleset.info:\n', sampleset.info)
+    # print('sampleset.info:\n', sampleset.info)
     embedding = sampleset.info['embedding_context']['embedding']
     chain_break_method = sampleset.info['embedding_context']['chain_break_method']
     chain_strength = sampleset.info['embedding_context']['chain_strength']
@@ -117,28 +118,24 @@ def n_queens(n,dp,dm, sampler=None):
     print(f"Number of logical variables: {n_vars}")
     print(f"Number of physical qubits used in embedding: {n_qb}")
 
-
-    f1 = open(f"data/n{n}_sols_{start_time}.txt", "w")
+    ruta = 'data/n_data/'
+    f1 = open(f"{ruta}{n}_sols_{start_time}.txt", "w")
     for sample in sampleset:
         f1.write(str(sample)+'\n')
     f1.close()
 
-    f2 = open(f"data/n{n}_sampleset_{start_time}.txt", "w")
+    f2 = open(f"{ruta}{n}_sampleset_{start_time}.txt", "w")
     f2.write(str(sampleset))
     f2.close()
 
     df = sampleset.to_pandas_dataframe()
-    # df.to_csv(f"data/n{n}_samplesetPD_{start_time}.csv")
-    f22 = open(f"data/n{n}_samplesetPD_{start_time}.txt", "w")
+    f22 = open(f"{ruta}{n}_samplesetPD_{start_time}.txt", "w")
     f22.write(df.to_string())
     f22.close()    
     nsols = df[df["energy"] == -2*n]['num_occurrences'].sum()
     psol = nsols / itr
-    # print('\nSolutions:\n', df[df["energy"] == -2*n])
-    # print('nsols ', nsols)
 
     sample = sampleset.first.sample
-    # print("Picked Solution:\n", sample)
     f3 = open("data/logsQPU.txt", "a")
     f3.write(f'{n}-q; {d}-d config\n')
     f3.write('embedding_time ' + str(embedding_time) + '\n')
@@ -149,14 +146,15 @@ def n_queens(n,dp,dm, sampler=None):
 
     f4 = open("data/timeQPU.txt", "a")
     line = f'{n}   {d}   {itr}   {psol}   {n_vars}   {n_qb}   ' \
-           f'{chain_strength}   {chain_break_method}   {embedding_time*10**3}   {py_time*10**3}'
+           f'{chain_strength}   {chain_break_method}   ' \
+           f'{embedding_time*10**3}   {py_time*10**3}   {done_time*10**3}'
     for v in sampleset.info["timing"]:
         line = line + '   ' + str(sampleset.info["timing"][v]*10**-3)
     f4.write(line + '\n')
     f4.close()
 
-    print('Sampleset:')
-    print(sampleset)
+    # print('Sampleset:')
+    # print(sampleset)
     
     # Inspect
     # dwave.inspector.show(sampleset)
@@ -257,8 +255,6 @@ def plot_chessboard(n, queens, dp, dm):
             else:
                 dm_dict[y-x][0].append(x)
                 dm_dict[y-x][1].append(y)
-    # print(dp_dict)
-    # print(dm_dict)
 
     for e in dp_dict:
         if len(dp_dict[e][0]) == 1:
@@ -281,8 +277,6 @@ def plot_chessboard(n, queens, dp, dm):
 if __name__ == "__main__":
 
     n = int(sys.argv[1])
-    # dp = [39,42,24,12,1,40,20,11,7,27,10,44,38,0]
-    # dm = [22,16,19,1,-20,-4,14,13,-22,-15,-11,-1,5,-17,-18,18]
     dp = []
     dm = []
 
