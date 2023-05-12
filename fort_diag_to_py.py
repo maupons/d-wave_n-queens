@@ -1,3 +1,7 @@
+# D + does not need conversion
+# D - needs to be reduced by 2
+
+
 a = '8          19          16          22          -1         -17           3         -23          14           7         -15         -16          -8         -24           1           7          -9          18          23          21          23           1          12         -10          18           0           0           0           0           0           0           0'
 n = 12
 
