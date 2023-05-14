@@ -28,12 +28,12 @@ import numpy as np
 import matplotlib
 matplotlib.use("agg")    # must select backend before importing pyplot
 import matplotlib.pyplot as plt
-from dimod import BinaryQuadraticModel
+from dimod import BinaryQuadraticModel, ExactSolver
 from dwave.system import LeapHybridSampler
 from dwave.system import DWaveSampler, EmbeddingComposite, FixedEmbeddingComposite
 import dwave.inspector
-# import neal
-# from dwave.samplers import SimulatedAnnealingSampler
+import neal
+from dwave.samplers import SimulatedAnnealingSampler
 from dwave.samplers import SteepestDescentSolver
 from time import time
 import sys
@@ -85,13 +85,30 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     start_time = time()
 
     # CPU
+    # sampler = ExactSolver()
+    # sampleset = sampler.sample_qubo(bqm)
+    # sampleset = sampler.sample(bqm)
+
     # sampler = neal.SimulatedAnnealingSampler()
     sampler = SimulatedAnnealingSampler()
-    sampleset = sampler.sample(bqm, num_reads=itr, label=f'n {n}, time {start_time}')
+    # sampler = SteepestDescentSolver()
+    sampleset = sampler.sample(bqm, num_reads=itr)
+
+    # sampleset = sampler.sample(bqm, num_reads=itr, label=f'n {n}, time {start_time}')
+    # sampleset = sampler.sample(bqm, label=f'n {n}, time {start_time}')
+    # sampleset = sampler.sample(bqm, chain_strength=2, num_reads=itr)
 
     # print('Sampleset----------------------------\n',sampleset)
     print('Sampleset.info-----------------------\n',sampleset.info)
+    # print('sampleset.record-------------------\n',sampleset.record[0])
+    # print('sampleset.record type', type(sampleset.record))
+    # print('sampleset.record[0] type', type(sampleset.record[0]))
+    # print('sampleset.lowest-------------------\n',sampleset.lowest())
+    # print('sampleset.lowest type-------------------\n',type(sampleset.lowest()))
+    # print('sampleset.lowest.first-------------------\n',sampleset.lowest().first)
     print('sampler.properties-------------------\n',sampler.properties)
+    sp_name = str(sampler).split(".")[4].split()[0]
+    print('sampler------------------------------\n',sp_name)
     
     py_time = time()-start_time
     print('py_time', py_time)
@@ -99,24 +116,18 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
 
     # Extract run info
     sample = sampleset.first.sample
+    energy = sampleset.first.energy
     nvars = len(sample)
-    # qpu_access_time = sampleset.info['qpu_access_time']
-    # charge_time = sampleset.info['charge_time']
-    # run_time = sampleset.info['run_time']
     df = sampleset.to_pandas_dataframe()
     nsols = df[df["energy"] == -2*n]['num_occurrences'].sum()
-    # energy = float(df["energy"])
-    energy = sampleset.first.energy
-    # record = sampleset.record
     print('nsols', nsols)
     print('energy', energy)
     print('nvars', nvars)
-    # print('sample', sample)
-    # print('record', record)
+
 
     f1 = open(f"{ruta}{n}_sols_{start_time}.txt", "w")
-    for sample in sampleset:
-        f1.write(str(sample)+'\n')
+    for spl in sampleset:
+        f1.write(str(spl)+'\n')
     f1.close()
 
     f2 = open(f"{ruta}{n}_sampleset_{start_time}.txt", "w")
@@ -136,7 +147,7 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     f3.close()
 
     f4 = open(f"{ruta}time.txt", "a")
-    line = f'{n}   {d}   {nvars}   {itr}   {py_time*10**3}   {energy}   '
+    line = f'{n}   {d}   {nvars}   {itr}   {sp_name}   {py_time*10**3}   {energy}   '
     f4.write(line)
     f4.close()
 
@@ -186,7 +197,7 @@ def is_valid_solution(n, solution):
     return True
 
 
-def plot_chessboard(n, queens, dp, dm, ruta):
+def plot_chessboard(n,queens, dp, dm, ruta):
     """Create a chessboard with queens using matplotlib. Image is saved
     in the root directory. Returns the image file name.
     """
@@ -208,7 +219,7 @@ def plot_chessboard(n, queens, dp, dm, ruta):
     plt.imshow(chessboard, cmap='binary')
 
     # Place queens
-    for qb,v in solution.items():
+    for qb,v in queens.items():
         y = qb // n
         x = qb-n*y
         if v:
@@ -260,16 +271,17 @@ if __name__ == "__main__":
 
     ruta = 'data/c_data/'
     n = int(sys.argv[1])
-    # n = 4
-    itr = 400
+    # n = 6
+    itr = 100
     # dp = [9]
     dp = []
     dm = []
 
     print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
-    solution,dp,dm = n_queens(n,dp,dm,itr,ruta)
+    s,dp,dm = n_queens(n,dp,dm,itr,ruta)
+    print(s)
 
-    if is_valid_solution(n, solution):
+    if is_valid_solution(n,s):
         write = "YES"
     else:
         write = "NO"
@@ -283,5 +295,5 @@ if __name__ == "__main__":
     f2.write(write +'\n')
     f2.close()
 
-    file_name = plot_chessboard(n, solution,dp,dm, ruta)
+    file_name = plot_chessboard(n,s,dp,dm, ruta)
     print("Chessboard created. See: {}".format(file_name))
