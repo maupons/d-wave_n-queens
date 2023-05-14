@@ -55,7 +55,7 @@ def n_queens(n,dp,dm,ruta, sampler=None):
 
     bqm = BinaryQuadraticModel({}, {}, 0, 'BINARY')
     # bqm.offset = 2*n
-    itr = 500
+    # itr = 500
     w = 2
     # cs = 89
 
@@ -111,8 +111,8 @@ def n_queens(n,dp,dm,ruta, sampler=None):
     # print('record', record)
 
     f1 = open(f"{ruta}{n}_sols_{start_time}.txt", "w")
-    for sample in sampleset:
-        f1.write(str(sample)+'\n')
+    for spl in sampleset:
+        f1.write(str(spl)+'\n')
     f1.close()
 
     f2 = open(f"{ruta}{n}_sampleset_{start_time}.txt", "w")

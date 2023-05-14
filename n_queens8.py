@@ -106,6 +106,7 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     chain_strength = sampleset.info['embedding_context']['chain_strength']
     n_vars = len(embedding.keys())
     n_qb = sum(len(chain) for chain in embedding.values())
+    sample = sampleset.first.sample
     energy = sampleset.first.energy
     print(f"Number of logical variables: {n_vars}")
     print(f"Number of physical qubits used in embedding: {n_qb}")
@@ -113,8 +114,8 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
 
     # ruta = 'data/n_data/'
     f1 = open(f"{ruta}/sp/{n}_sols_{start_time}.txt", "w")
-    for sample in sampleset:
-        f1.write(str(sample)+'\n')
+    for spl in sampleset:
+        f1.write(str(spl)+'\n')
     f1.close()
 
     f2 = open(f"{ruta}/sp/{n}_sampleset_{start_time}.txt", "w")
@@ -128,7 +129,6 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     nsols = df[df["energy"] == -2*n]['num_occurrences'].sum()
     psol = nsols / itr
 
-    sample = sampleset.first.sample
     f3 = open(f"{ruta}logsQPU.txt", "a")
     f3.write(f'{n}-q; {d}-d config\n')
     f3.write('embedding_time ' + str(embedding_time) + '\n')
