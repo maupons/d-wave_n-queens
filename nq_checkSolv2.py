@@ -34,6 +34,76 @@ import dwave.inspector
 import neal
 from time import time
 
+def get_energy_v1(n,dp,dm,solution):
+    e = 0
+    w = 2
+
+    for i in range(n**2):
+        ri = i // n
+        ci = i-n*ri
+        if (ri+ci) in dp:
+            e += w*solution[i]
+            # bqm.add_variable(i, w)
+        elif (ri-ci) in dm:
+            e += w*solution[i]
+            # bqm.add_variable(i, w)
+        else:
+            # bqm.add_variable(i, -w)
+            e -= w*solution[i]
+            
+        for j in range(i):
+            rj = j // n
+            cj = j-n*rj
+            if rj == ri:
+                # bqm.add_interaction(i, j, w)
+                e += w*solution[i]*solution[j]
+            if cj == ci:
+                # bqm.add_interaction(i, j, w)
+                e += w*solution[i]*solution[j]
+            if abs(ri-rj) == abs(ci-cj):
+                # bqm.add_interaction(i, j, w)
+                e += w*solution[i]*solution[j]
+    return e
+
+def get_energy_v2(n,dp,dm,solution):
+    w = 2
+
+    x = list(solution.values())
+    x = np.array(x)
+    x.shape = (n**2,1) 
+    
+    bqm = np.zeros((n**2, n**2))
+    for i in range(n**2):
+        ri = i // n
+        ci = i-n*ri
+        if (ri+ci) in dp:
+            bqm[i,i] = w
+        elif (ri-ci) in dm:
+            bqm[i,i] = w
+        else:
+            bqm[i,i] = -w
+            
+        for j in range(i):
+            rj = j // n
+            cj = j-n*rj
+            if rj == ri:
+                bqm[j,i] = w
+            if cj == ci:
+                bqm[j,i] = w
+            if abs(ri-rj) == abs(ci-cj):
+                bqm[j,i] = w
+    # np.set_printoptions(threshold=np.inf)
+    # print(bqm)
+
+    # row = ''
+    # for i in bqm:
+    #     for j in i:
+    #         row += f'{j} '
+    #     print(row)
+    #     row = ''
+
+    e = np.matmul(x.transpose(),np.matmul(bqm,x))[0,0]
+    return e
 
 def is_valid_solution(n, solution):
     """Check that solution is valid by making sure all constraints were met.
@@ -84,7 +154,7 @@ def is_valid_solution(n, solution):
     return True
 
 
-def plot_chessboard(n, queens, dp, dm):
+def plot_chessboard(n,s, dp, dm):
     """Create a chessboard with queens using matplotlib. Image is saved
     in the root directory. Returns the image file name.
     """
@@ -106,7 +176,7 @@ def plot_chessboard(n, queens, dp, dm):
     plt.imshow(chessboard, cmap='binary')
 
     # Place queens
-    for qb,v in solution.items():
+    for qb,v in s.items():
         y = qb // n
         x = qb-n*y
         if v:
@@ -161,18 +231,25 @@ if __name__ == "__main__":
     n = 6
     dp = []
     dm = []
-    solution = {0: 0, 1: 0, 2: 0, 3: 0, 4: 1, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 1, 13: 0, 14: 0, 15: 0, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 1, 22: 0, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 1, 30: 0, 31: 0, 32: 1, 33: 0, 34: 0, 35: 0}
+    # solution = {0: 0, 1: 0, 2: 0, 3: 0, 4: 1, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 1, 13: 0, 14: 0, 15: 0, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 1, 22: 0, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 1, 30: 0, 31: 0, 32: 1, 33: 0, 34: 0, 35: 0}
+    # s = {0: 1, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 1, 10: 0, 11: 0, 12: 0, 13: 1, 14: 0, 15: 0, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 1, 23: 0, 24: 0, 25: 0, 26: 1, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0}
+    s={0: 0, 1: 0, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 1, 12: 0, 13: 1, 14: 0, 15: 0, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 1, 23: 0, 24: 1, 25: 0, 26: 0, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 1, 34: 0, 35: 0}
 
     print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
-    print('***********')
-    print(solution)
-    print('*****//////////')
+    print(s)
 
-    if is_valid_solution(n, solution):
+    if is_valid_solution(n, s):
         write = "Solution is valid."
     else:
         write = "Solution is invalid."
+    
+    e1 = get_energy_v1(n,dp,dm,s)
+    print('energy_v1:', e1)
+
+    e2 = get_energy_v2(n,dp,dm,s)
+    print('energy_v2:', e2)
+
 
     print(write)
-    file_name = plot_chessboard(n, solution,dp,dm)
+    file_name = plot_chessboard(n,s,dp,dm)
     print("Chessboard created. See: {}".format(file_name))
