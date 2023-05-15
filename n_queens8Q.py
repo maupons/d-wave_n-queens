@@ -113,17 +113,17 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     print('energy', energy)
 
     # ruta = 'data/n_data/'
-    f1 = open(f"{ruta}/sp/{n}_sols_{start_time}.txt", "w")
+    f1 = open(f"{ruta}sp/{n}_sols_{start_time}.txt", "w")
     for spl in sampleset:
         f1.write(str(spl)+'\n')
     f1.close()
 
-    f2 = open(f"{ruta}/sp/{n}_sampleset_{start_time}.txt", "w")
+    f2 = open(f"{ruta}sp/{n}_sampleset_{start_time}.txt", "w")
     f2.write(str(sampleset))
     f2.close()
 
     df = sampleset.to_pandas_dataframe()
-    f22 = open(f"{ruta}/sp/{n}_samplesetPD_{start_time}.txt", "w")
+    f22 = open(f"{ruta}sp/{n}_samplesetPD_{start_time}.txt", "w")
     f22.write(df.to_string())
     f22.close()    
     nsols = df[df["energy"] == -2*n]['num_occurrences'].sum()
