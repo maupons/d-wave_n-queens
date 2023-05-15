@@ -29,12 +29,8 @@ import matplotlib
 matplotlib.use("agg")    # must select backend before importing pyplot
 import matplotlib.pyplot as plt
 from dimod import BinaryQuadraticModel, ExactSolver
-from dwave.system import LeapHybridSampler
-from dwave.system import DWaveSampler, EmbeddingComposite, FixedEmbeddingComposite
-import dwave.inspector
-import neal
-from dwave.samplers import SimulatedAnnealingSampler
-from dwave.samplers import SteepestDescentSolver
+from dwave.samplers import SimulatedAnnealingSampler, SteepestDescentSolver \
+, TabuSampler, TreeDecompositionSolver, RandomSampler
 from time import time
 import sys
 import datetime as dt
@@ -54,12 +50,8 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     """
 
     d = len(dp) + len(dm)
-
     bqm = BinaryQuadraticModel({}, {}, 0, 'BINARY')
-    # bqm.offset = 2*n
-    # itr = 1000
     w = 2
-    # cs = 89
 
     for i in range(n**2):
         ri = i // n
@@ -89,29 +81,19 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     # sampleset = sampler.sample_qubo(bqm)
     # sampleset = sampler.sample(bqm)
 
-    # sampler = neal.SimulatedAnnealingSampler()
-    sampler = SimulatedAnnealingSampler()
+    # sampler = SimulatedAnnealingSampler()
     # sampler = SteepestDescentSolver()
-    sampleset = sampler.sample(bqm, num_reads=itr)
-
-    # sampleset = sampler.sample(bqm, num_reads=itr, label=f'n {n}, time {start_time}')
-    # sampleset = sampler.sample(bqm, label=f'n {n}, time {start_time}')
-    # sampleset = sampler.sample(bqm, chain_strength=2, num_reads=itr)
-
-    # print('Sampleset----------------------------\n',sampleset)
-    print('Sampleset.info-----------------------\n',sampleset.info)
-    # print('sampleset.record-------------------\n',sampleset.record[0])
-    # print('sampleset.record type', type(sampleset.record))
-    # print('sampleset.record[0] type', type(sampleset.record[0]))
-    # print('sampleset.lowest-------------------\n',sampleset.lowest())
-    # print('sampleset.lowest type-------------------\n',type(sampleset.lowest()))
-    # print('sampleset.lowest.first-------------------\n',sampleset.lowest().first)
-    print('sampler.properties-------------------\n',sampler.properties)
-    sp_name = str(sampler).split(".")[4].split()[0]
-    print('sampler------------------------------\n',sp_name)
-    print('sampler------------------------------\n',sampler)
+    # sampler = TabuSampler()
+    # sampler = TreeDecompositionSolver()
+    sampler = RandomSampler()
     
+    sampleset = sampler.sample(bqm, num_reads=itr)
     py_time = time()-start_time
+    sp_name = str(sampler).split(".")[4].split()[0]
+
+    print('Sampleset.info-----------------------\n',sampleset.info)
+    print('sampler.properties-------------------\n',sampler.properties)
+    print('sampler------------------------------\n',sp_name)
     print('py_time', py_time)
     print('sampleset.done', sampleset.done())
 
@@ -125,20 +107,20 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     print('energy', energy)
     print('nvars', nvars)
 
+    # Write sampleset and solutions to file
+    # f1 = open(f"{ruta}/sp/{n}_sols_{start_time}.txt", "w")
+    # for spl in sampleset:
+    #     f1.write(str(spl)+'\n')
+    # f1.close()
 
-    f1 = open(f"{ruta}/sp/{n}_sols_{start_time}.txt", "w")
-    for spl in sampleset:
-        f1.write(str(spl)+'\n')
-    f1.close()
-
-    f2 = open(f"{ruta}/sp/{n}_sampleset_{start_time}.txt", "w")
-    f2.write(str(sampleset))
-    f2.close()
+    # f2 = open(f"{ruta}/sp/{n}_sampleset_{start_time}.txt", "w")
+    # f2.write(str(sampleset))
+    # f2.close()
 
     
-    f22 = open(f"{ruta}/sp/{n}_samplesetPD_{start_time}.txt", "w")
-    f22.write(df.to_string())
-    f22.close()
+    # f22 = open(f"{ruta}/sp/{n}_samplesetPD_{start_time}.txt", "w")
+    # f22.write(df.to_string())
+    # f22.close()
 
     f3 = open(f"{ruta}logs.txt", "a")
     f3.write(f'{n}-q; {d}-d config\n')
@@ -273,28 +255,29 @@ if __name__ == "__main__":
     ruta = 'data/c_data/'
     n = int(sys.argv[1])
     # n = 6
-    itr = 100
+    itr = 10**8
     # dp = [9]
     dp = []
     dm = []
 
-    print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
-    s,dp,dm = n_queens(n,dp,dm,itr,ruta)
-    print(s)
+    for ix in range(1):
+        print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
+        s,dp,dm = n_queens(n,dp,dm,itr,ruta)
+        print(s)
 
-    if is_valid_solution(n,s):
-        write = "YES"
-    else:
-        write = "NO"
-    print('Solution - ', write)
+        if is_valid_solution(n,s):
+            write = "YES"
+        else:
+            write = "NO"
+        print('Solution - ', write)
 
-    f = open(f"{ruta}logs.txt", "a")
-    f.write('Solution - ' + write + '\n\n')
-    f.close()
+        f = open(f"{ruta}logs.txt", "a")
+        f.write('Solution - ' + write + '\n\n')
+        f.close()
 
-    f2 = open(f"{ruta}time.txt", "a")
-    f2.write(write +'\n')
-    f2.close()
+        f2 = open(f"{ruta}time.txt", "a")
+        f2.write(write +'\n')
+        f2.close()
 
-    file_name = plot_chessboard(n,s,dp,dm, ruta)
-    print("Chessboard created. See: {}".format(file_name))
+        file_name = plot_chessboard(n,s,dp,dm, ruta)
+        print("Chessboard created. See: {}".format(file_name))
