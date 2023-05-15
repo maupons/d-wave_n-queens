@@ -76,18 +76,18 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     print(f'Classical solver started with {itr} reads...')
     start_time = time()
 
-    # CPU
+    # Exact Solver
     # sampler = ExactSolver()
-    # sampleset = sampler.sample_qubo(bqm)
     # sampleset = sampler.sample(bqm)
 
+    # Heuristic  Solvers
     # sampler = SimulatedAnnealingSampler()
-    # sampler = SteepestDescentSolver()
+    sampler = SteepestDescentSolver()
     # sampler = TabuSampler()
     # sampler = TreeDecompositionSolver()
-    sampler = RandomSampler()
-    
+    # sampler = RandomSampler()    
     sampleset = sampler.sample(bqm, num_reads=itr)
+
     py_time = time()-start_time
     sp_name = str(sampler).split(".")[4].split()[0]
 
@@ -100,12 +100,14 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     # Extract run info
     sample = sampleset.first.sample
     energy = sampleset.first.energy
+    num_itr = len(sampleset)
     nvars = len(sample)
     df = sampleset.to_pandas_dataframe()
     nsols = df[df["energy"] == -2*n]['num_occurrences'].sum()
     print('nsols', nsols)
     print('energy', energy)
     print('nvars', nvars)
+    print('num_itr', num_itr)
 
     # Write sampleset and solutions to file
     # f1 = open(f"{ruta}sp/{n}_sols_{start_time}.txt", "w")
@@ -130,7 +132,7 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     f3.close()
 
     f4 = open(f"{ruta}time.txt", "a")
-    line = f'{n}   {d}   {nvars}   {itr}   {sp_name}   {py_time*10**3}   {energy}   '
+    line = f'{n}   {d}   {nvars}   {num_itr}   {sp_name}   {py_time*10**3}   {energy}   '
     f4.write(line)
     f4.close()
 
@@ -255,7 +257,7 @@ if __name__ == "__main__":
     ruta = 'data/c_data/'
     n = int(sys.argv[1])
     # n = 6
-    itr = 10**8
+    itr = 10
     # dp = [9]
     dp = []
     dm = []
