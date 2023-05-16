@@ -81,11 +81,12 @@ def n_queens(n,dp,dm,itr, sampler=None):
     # sampleset = sampler.sample(bqm)
 
     # Heuristic  Solvers
-    # sampler = SimulatedAnnealingSampler()
-    sampler = SteepestDescentSolver()
+    sampler = SimulatedAnnealingSampler()
+    # sampler = SteepestDescentSolver()
     # sampler = TabuSampler()
     # sampler = TreeDecompositionSolver()
     # sampler = RandomSampler()    
+    print(sampler)
     sampleset = sampler.sample(bqm, num_reads=itr)
 
     py_time = time()-start_time
@@ -210,7 +211,7 @@ if __name__ == "__main__":
     ruta = 'data/c_data/'
     n = int(sys.argv[1])
     # itr = 0
-    itr = 10**5
+    itr = 5
     dp = []
     dm = []
     d = len(dp) + len(dm)
@@ -228,6 +229,7 @@ if __name__ == "__main__":
         nsols = df[df["energy"] == -2*n]['num_occurrences'].sum()
         p_sol = psol = nsols / num_itr
         sp_name = str(sampler).split(".")[4].split()[0]
+        ID = time()
         
         if is_valid_solution(n,sample):
             solved = "YES"
@@ -246,16 +248,16 @@ if __name__ == "__main__":
         print('- Solved - ', solved)
 
         # Write sampleset and solutions to file
-        # f1 = open(f"{ruta}sp/{n}_sols_{start_time}.txt", "w")
+        # f1 = open(f"{ruta}sp/{n}_sols_{ID}.txt", "w")
         # for spl in sampleset:
         #     f1.write(str(spl)+'\n')
         # f1.close()
 
-        # f2 = open(f"{ruta}sp/{n}_sampleset_{start_time}.txt", "w")
-        # f2.write(str(sampleset))
-        # f2.close()
+        f2 = open(f"{ruta}sp/{n}_sampleset_{ID}.txt", "w")
+        f2.write(str(sampleset))
+        f2.close()
 
-        # f22 = open(f"{ruta}sp/{n}_samplesetPD_{start_time}.txt", "w")
+        # f22 = open(f"{ruta}sp/{n}_samplesetPD_{ID}.txt", "w")
         # f22.write(df.to_string())
         # f22.close()
 
