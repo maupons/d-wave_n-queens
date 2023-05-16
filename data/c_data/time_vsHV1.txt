@@ -9,4 +9,3 @@ n   d   nvars   num_itr   p_sol   sp_name   py_time   energy   solution
 100   0   10000   1000   0.0   SteepestDescentSolver   108462.37564086914   -176.0   NO
 100   0   10000   10000   0.0   SteepestDescentSolver   1055753.042459488   -180.0   NO
 100   0   10000   100000   0.0   SteepestDescentSolver   10495773.636579514   -186.0   NO
-100   0   10000   10   0.0   SteepestDescentSolver   1766.0162448883057   -168.0   NO
