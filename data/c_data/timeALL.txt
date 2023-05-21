@@ -1,0 +1,59 @@
+n   d   nvars   num_itr   p_sol   sp_name   py_time   energy   solution
+5   0   25   1   1.0   SimulatedAnnealingSampler   4.409074783325195   -10.0   YES
+10   0   100   1   1.0   SimulatedAnnealingSampler   16.77107810974121   -20.0   YES
+20   0   400   1   1.0   SimulatedAnnealingSampler   72.93844223022461   -40.0   YES
+30   0   900   1   1.0   SimulatedAnnealingSampler   254.87017631530762   -60.0   YES
+40   0   1600   1   1.0   SimulatedAnnealingSampler   661.7906093597412   -80.0   YES
+50   0   2500   1   1.0   SimulatedAnnealingSampler   1280.5466651916504   -100.0   YES
+60   0   3600   1   1.0   SimulatedAnnealingSampler   2082.0443630218506   -120.0   YES
+70   0   4900   1   1.0   SimulatedAnnealingSampler   3159.2042446136475   -140.0   YES
+80   0   6400   1   1.0   SimulatedAnnealingSampler   4705.205678939819   -160.0   YES
+90   0   8100   1   1.0   SimulatedAnnealingSampler   7125.961542129517   -180.0   YES
+100   0   10000   1   1.0   SimulatedAnnealingSampler   9887.224674224854   -200.0   YES
+150   0   22500   1   1.0   SimulatedAnnealingSampler   30693.882703781128   -300.0   YES
+200   0   40000   1   1.0   SimulatedAnnealingSampler   77753.03363800049   -400.0   YES
+250   0   62500   1   1.0   SimulatedAnnealingSampler   147403.02801132202   -500.0   YES
+300   0   90000   1   0.0   SimulatedAnnealingSampler   259559.78417396545   -598.0   NO
+300   0   90000   1   0.0   SimulatedAnnealingSampler   251047.7170944214   -598.0   NO
+
+5   0   25   1   1.0   SteepestDescentSolver   1.7828941345214844   -10.0   YES
+10   0   100   1   0.0   SteepestDescentSolver   2.9196739196777344   -18.0   NO
+20   0   400   1   0.0   SteepestDescentSolver   8.631467819213867   -32.0   NO
+30   0   900   1   0.0   SteepestDescentSolver   21.607398986816406   -48.0   NO
+40   0   1600   1   0.0   SteepestDescentSolver   57.4948787689209   -70.0   NO
+50   0   2500   1   0.0   SteepestDescentSolver   113.01040649414062   -80.0   NO
+60   0   3600   1   0.0   SteepestDescentSolver   185.76550483703613   -96.0   NO
+70   0   4900   1   0.0   SteepestDescentSolver   268.2809829711914   -114.0   NO
+80   0   6400   1   0.0   SteepestDescentSolver   407.0301055908203   -134.0   NO
+90   0   8100   1   0.0   SteepestDescentSolver   663.628101348877   -148.0   NO
+100   0   10000   1   0.0   SteepestDescentSolver   800.0268936157227   -160.0   NO
+
+5   0   25   1   1.0   TabuSampler   22.974491119384766   -10.0   YES
+10   0   100   1   1.0   TabuSampler   25.17867088317871   -20.0   YES
+20   0   400   1   1.0   TabuSampler   34.26241874694824   -40.0   YES
+30   0   900   1   1.0   TabuSampler   89.82610702514648   -60.0   YES
+40   0   1600   1   0.0   TabuSampler   267.2920227050781   -62.0   NO
+50   0   2500   1   0.0   TabuSampler   724.7381210327148   99184.0   NO
+60   0   3600   1   0.0   TabuSampler   1683.621883392334   171218.0   NO
+70   0   4900   1   0.0   TabuSampler   3454.7030925750732   277058.0   NO
+80   0   6400   1   0.0   TabuSampler   6709.423303604126   407898.0   NO
+90   0   8100   1   0.0   TabuSampler   11405.524492263794   592346.0   NO
+100   0   10000   1   0.0   TabuSampler   17916.86964035034   816194.0   NO
+
+5   0   25   1   1.0   TreeDecompositionSolver   142.2252655029297   -10.0   YES
+
+5   0   25   1   0.0   RandomSampler   0.6597042083740234   98.0   NO
+10   0   100   1   0.0   RandomSampler   0.7081031799316406   486.0   NO
+20   0   400   1   0.0   RandomSampler   0.6184577941894531   6500.0   NO
+30   0   900   1   0.0   RandomSampler   0.9160041809082031   20612.0   NO
+40   0   1600   1   0.0   RandomSampler   1.5451908111572266   52888.0   NO
+50   0   2500   1   0.0   RandomSampler   2.482175827026367   101418.0   NO
+60   0   3600   1   0.0   RandomSampler   2.9959678649902344   172488.0   NO
+70   0   4900   1   0.0   RandomSampler   3.613710403442383   282346.0   NO
+80   0   6400   1   0.0   RandomSampler   5.349159240722656   427332.0   NO
+90   0   8100   1   0.0   RandomSampler   7.849454879760742   586162.0   NO
+100   0   10000   1   0.0   RandomSampler   9.657144546508789   813766.0   NO
+
+4   0   16   65536   3.0517578125e-05   ExactSolver   135.75243949890137   -8.0   YES
+4   0   16   65536   3.0517578125e-05   ExactSolver   138.3364200592041   -8.0   YES
+5   0   25   33554432   2.980232238769531e-07   ExactSolver   82289.06536102295   -10.0   YES
