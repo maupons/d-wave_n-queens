@@ -85,7 +85,7 @@ def n_queens(n,dp,dm,itr, sampler=None):
     # sampler = SteepestDescentSolver()
     # sampler = TabuSampler()
     # sampler = TreeDecompositionSolver()
-    # sampler = RandomSampler()    
+    # sampler = RandomSampler()
     print(sampler)
     sampleset = sampler.sample(bqm, num_reads=itr)
 
@@ -210,13 +210,13 @@ if __name__ == "__main__":
 
     ruta = 'data/c_data/'
     n = int(sys.argv[1])
-    # itr = 0
-    itr = 5
+    itr = 1
     dp = []
     dm = []
     d = len(dp) + len(dm)
 
     for ix in range(1):
+    # for n in range(10, 101, 10):
         print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
         sampleset, sampler, py_time = n_queens(n,dp,dm,itr)
 
@@ -253,9 +253,9 @@ if __name__ == "__main__":
         #     f1.write(str(spl)+'\n')
         # f1.close()
 
-        f2 = open(f"{ruta}sp/{n}_sampleset_{ID}.txt", "w")
-        f2.write(str(sampleset))
-        f2.close()
+        # f2 = open(f"{ruta}sp/{n}_sampleset_{ID}.txt", "w")
+        # f2.write(str(sampleset))
+        # f2.close()
 
         # f22 = open(f"{ruta}sp/{n}_samplesetPD_{ID}.txt", "w")
         # f22.write(df.to_string())
@@ -271,8 +271,8 @@ if __name__ == "__main__":
 
         line = f'{n}   {d}   {nvars}   {num_itr}   {p_sol}   {sp_name}   '\
                f'{py_time*10**3}   {energy}   {solved}\n'
-        # f4 = open(f"{ruta}time.txt", "a")
-        f4 = open(f"{ruta}time_vsH.txt", "a")
+        f4 = open(f"{ruta}time.txt", "a")
+        # f4 = open(f"{ruta}time_vsH.txt", "a")
         f4.write(line)
         f4.close()
 
