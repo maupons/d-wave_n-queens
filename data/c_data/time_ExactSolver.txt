@@ -1,0 +1,7 @@
+n   d   nvars   num_itr   sp_name   py_time   energy   solution
+4   0   16   65536   ExactSolver   138.29278945922852   -8.0   YES
+4   0   16   65536   ExactSolver   131.75129890441895   -8.0   YES
+4   0   16   65536   ExactSolver   127.80928611755371   -8.0   YES
+5   0   25   33554432   ExactSolver   71357.88488388062   -10.0   YES
+5   0   25   33554432   ExactSolver   73383.60619544983   -10.0   YES
+5   0   25   33554432   ExactSolver   72709.2833518982   -10.0   YES
