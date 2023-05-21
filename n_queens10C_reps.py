@@ -34,7 +34,7 @@ from time import time
 import sys
 import datetime as dt
 
-
+bqm = 0
 def n_queens(n,dp,dm,itr, sampler=None):
     """Returns a potential solution to the n-queens problem in a dictionary, where
     the keys are qubit id and value on or off
@@ -48,29 +48,31 @@ def n_queens(n,dp,dm,itr, sampler=None):
                  3) SimulatedAnnealingSampler
     """
 
+    global bqm
     # d = len(dp) + len(dm)
-    bqm = BinaryQuadraticModel({}, {}, 0, 'BINARY')
-    w = 2
+    if bqm == 0:
+        bqm = BinaryQuadraticModel({}, {}, 0, 'BINARY')
+        w = 2
 
-    for i in range(n**2):
-        ri = i // n
-        ci = i-n*ri
-        if (ri+ci) in dp:
-            bqm.add_variable(i, w)
-        elif (ri-ci) in dm:
-            bqm.add_variable(i, w)
-        else:
-            bqm.add_variable(i, -w)
-            
-        for j in range(i):
-            rj = j // n
-            cj = j-n*rj
-            if rj == ri:
-                bqm.add_interaction(i, j, w)
-            if cj == ci:
-                bqm.add_interaction(i, j, w)
-            if abs(ri-rj) == abs(ci-cj):
-                bqm.add_interaction(i, j, w)
+        for i in range(n**2):
+            ri = i // n
+            ci = i-n*ri
+            if (ri+ci) in dp:
+                bqm.add_variable(i, w)
+            elif (ri-ci) in dm:
+                bqm.add_variable(i, w)
+            else:
+                bqm.add_variable(i, -w)
+                
+            for j in range(i):
+                rj = j // n
+                cj = j-n*rj
+                if rj == ri:
+                    bqm.add_interaction(i, j, w)
+                if cj == ci:
+                    bqm.add_interaction(i, j, w)
+                if abs(ri-rj) == abs(ci-cj):
+                    bqm.add_interaction(i, j, w)
 
     print(f'Classical solver started with {itr} reads...')
     start_time = time()
@@ -84,7 +86,7 @@ def n_queens(n,dp,dm,itr, sampler=None):
     # sampler = SteepestDescentSolver()
     # sampler = TabuSampler()
     # sampler = TreeDecompositionSolver()
-    # sampler = RandomSampler()
+    # sampler = RandomSampler()    
     print(sampler)
     sampleset = sampler.sample(bqm, num_reads=itr)
 
@@ -209,13 +211,13 @@ if __name__ == "__main__":
 
     ruta = 'data/c_data/'
     n = int(sys.argv[1])
-    itr = 1
+    # itr = 0
+    itr = 100
     dp = []
     dm = []
     d = len(dp) + len(dm)
 
-    for ix in range(1):
-    # for n in range(10, 101, 10):
+    for ix in range(100):
         print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
         sampleset, sampler, py_time = n_queens(n,dp,dm,itr)
 
@@ -252,6 +254,10 @@ if __name__ == "__main__":
         #     f1.write(str(spl)+'\n')
         # f1.close()
 
+        # f2 = open(f"{ruta}sp/{n}_sampleset_{ID}.txt", "w")
+        # f2.write(str(sampleset))
+        # f2.close()
+
         # f22 = open(f"{ruta}sp/{n}_samplesetPD_{ID}.txt", "w")
         # f22.write(df.to_string())
         # f22.close()
@@ -266,13 +272,10 @@ if __name__ == "__main__":
 
         line = f'{n}   {d}   {nvars}   {num_itr}   {p_sol}   {sp_name}   '\
                f'{py_time*10**3}   {energy}   {solved}\n'
-        f4 = open(f"{ruta}time.txt", "a")
+        # f4 = open(f"{ruta}time.txt", "a")
+        f4 = open(f"{ruta}time_vsH.txt", "a")
         f4.write(line)
         f4.close()
-
-        # f2 = open(f"{ruta}sp/{n}_sampleset_{ID}.txt", "w")
-        # f2.write(str(sampleset))
-        # f2.close()
 
         # file_name = plot_chessboard(n,sample,dp,dm,ruta)
         # print("Chessboard created. See: {}".format(file_name))
