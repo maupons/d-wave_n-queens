@@ -27,15 +27,18 @@ import numpy as np
 import matplotlib
 matplotlib.use("agg")    # must select backend before importing pyplot
 import matplotlib.pyplot as plt
-from dimod import BinaryQuadraticModel, ExactSolver
-from dwave.samplers import SimulatedAnnealingSampler, SteepestDescentSolver \
-, TabuSampler, TreeDecompositionSolver, RandomSampler
+from dimod import BinaryQuadraticModel
+from dwave.system import LeapHybridSampler
+from dwave.system import DWaveSampler, EmbeddingComposite, FixedEmbeddingComposite
+from dwave.system import DWaveCliqueSampler
+import dwave.inspector
+import neal
 from time import time
 import sys
 import datetime as dt
 
 
-def n_queens(n,dp,dm,itr, sampler=None):
+def n_queens(n,dp,dm,itr,ruta, sampler=None):
     """Returns a potential solution to the n-queens problem in a dictionary, where
     the keys are qubit id and value on or off
 
@@ -48,9 +51,13 @@ def n_queens(n,dp,dm,itr, sampler=None):
                  3) SimulatedAnnealingSampler
     """
 
-    # d = len(dp) + len(dm)
+    d = len(dp) + len(dm)
+
     bqm = BinaryQuadraticModel({}, {}, 0, 'BINARY')
+    # bqm.offset = 2*n
+    # itr = 500
     w = 2
+    # cs = 89
 
     for i in range(n**2):
         ri = i // n
@@ -72,24 +79,72 @@ def n_queens(n,dp,dm,itr, sampler=None):
             if abs(ri-rj) == abs(ci-cj):
                 bqm.add_interaction(i, j, w)
 
-    print(f'Classical solver started with {itr} reads...')
+    print(f'solver started with {itr} reads...')
+
+    # QPU   
     start_time = time()
+    sampler = EmbeddingComposite(DWaveSampler())
+    embedding_time = time()-start_time
 
-    # Exact Solver
-    # sampler = ExactSolver()
-    # sampleset = sampler.sample(bqm)
-
-    # Heuristic  Solvers
-    sampler = SimulatedAnnealingSampler()
-    # sampler = SteepestDescentSolver()
-    # sampler = TabuSampler()
-    # sampler = TreeDecompositionSolver()
-    # sampler = RandomSampler()
-    print(sampler)
-    sampleset = sampler.sample(bqm, num_reads=itr)
-
+    sampleset = sampler.sample(bqm, num_reads=itr, label=f'n{n}d{d}time{start_time}')
     py_time = time()-start_time
-    return sampleset, sampler, py_time
+
+    sp_name = str(sampler).split(".")[4].split()[0]
+    print('sampler', sampler)
+    print('sp_name', sp_name)
+
+    # Extract run info
+    embedding = sampleset.info['embedding_context']['embedding']
+    chain_break_method = sampleset.info['embedding_context']['chain_break_method']
+    chain_strength = sampleset.info['embedding_context']['chain_strength']
+    n_vars = len(embedding.keys())
+    n_qb = sum(len(chain) for chain in embedding.values())
+    sample = sampleset.first.sample
+    energy = sampleset.first.energy
+    df = sampleset.to_pandas_dataframe()
+    nsols = df[df["energy"] == -2*n]['num_occurrences'].sum()
+    psol = nsols / itr
+    print('sp_name', sp_name)
+    print(f"Number of logical variables: {n_vars}")
+    print(f"Number of physical qubits used in embedding: {n_qb}")
+    print('energy', energy)
+    print('py_time', py_time)
+    print('nsols', nsols)
+    print('psol', psol)
+
+    f1 = open(f"{ruta}sp/{n}_sols_{start_time}.txt", "w")
+    for spl in sampleset:
+        f1.write(str(spl)+'\n')
+    f1.close()
+
+    f2 = open(f"{ruta}sp/{n}_sampleset_{start_time}.txt", "w")
+    f2.write(str(sampleset))
+    f2.close()
+
+    f22 = open(f"{ruta}sp/{n}_samplesetPD_{start_time}.txt", "w")
+    f22.write(df.to_string())
+    f22.close()    
+
+    f3 = open(f"{ruta}logsQPU.txt", "a")
+    f3.write(f'{n}-q; {d}-d config\n')
+    f3.write('sp_name ' + str(sp_name) + '\n')
+    f3.write('embedding_time ' + str(embedding_time) + '\n')
+    f3.write(str(sample)+'\n')
+    f3.write('py_time ' + str(py_time) + '\n')
+    f3.write(str(sampleset.info)+'\n')
+    f3.close()
+
+    f4 = open(f"{ruta}time.txt", "a")
+    line = f'{n}   {d}   {itr}   {sp_name}   {psol}   {energy}   {n_vars}   {n_qb}   ' \
+           f'{chain_strength}   {chain_break_method}   {py_time*10**3}   '
+    line += f'{embedding_time*10**3}   ' if embedding_time else f'NA   '
+    for v in sampleset.info["timing"]:
+        line = line + '   ' + str(sampleset.info["timing"][v]*10**-3)
+    f4.write(line + '\n')
+    f4.close()
+    
+    # dwave.inspector.show(sampleset)             # Show Dwave Inspector Tool
+    return sample,dp,dm
 
 
 def is_valid_solution(n, solution):
@@ -135,7 +190,7 @@ def is_valid_solution(n, solution):
     return True
 
 
-def plot_chessboard(n,queens, dp, dm, ruta):
+def plot_chessboard(n,s,dp,dm,ruta):
     """Create a chessboard with queens using matplotlib. Image is saved
     in the root directory. Returns the image file name.
     """
@@ -157,7 +212,7 @@ def plot_chessboard(n,queens, dp, dm, ruta):
     plt.imshow(chessboard, cmap='binary')
 
     # Place queens
-    for qb,v in queens.items():
+    for qb,v in s.items():
         y = qb // n
         x = qb-n*y
         if v:
@@ -198,82 +253,60 @@ def plot_chessboard(n,queens, dp, dm, ruta):
             plt.plot(dm_dict[e][0],dm_dict[e][1],'rs')
         else:
             plt.plot(dm_dict[e][0],dm_dict[e][1],'r')
-
+    
+    d = len(dp) + len(dm)
     # Save file in root directory
-    file_name = f"{ruta}figs/{n}-queens-solution.png"
+    file_name = f"{ruta}figs/n{n}-d{d}queens-solution.png"
     plt.savefig(file_name)
 
     return file_name
 
 if __name__ == "__main__":
 
-    ruta = 'data/c_data/'
-    n = int(sys.argv[1])
-    itr = 1
+    ruta = 'data/q_data/'
+    # n = int(sys.argv[1])
+    n = 7
+    itr = 1000
+
     dp = []
     dm = []
-    d = len(dp) + len(dm)
 
-    for ix in range(1):
-    # for n in range(10, 101, 10):
-        print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
-        sampleset, sampler, py_time = n_queens(n,dp,dm,itr)
+    # dp = [9]
+    # dm = []
 
-        # Extract run info
-        sample = sampleset.first.sample
-        energy = sampleset.first.energy
-        num_itr = len(sampleset)
-        nvars = len(sample)
-        df = sampleset.to_pandas_dataframe()
-        nsols = df[df["energy"] == -2*n]['num_occurrences'].sum()
-        p_sol = psol = nsols / num_itr
-        sp_name = str(sampler).split(".")[4].split()[0]
-        ID = time()
-        
-        if is_valid_solution(n,sample):
-            solved = "YES"
-        else:
-            solved = "NO"
+    # dp = [11]
+    # dm = [3]
 
-        # print('Solution\n', sample)
-        print('sampleset.info: ',sampleset.info)
-        print('sampler.properties: ',sampler.properties)
-        print('sampler',sp_name)
-        print('py_time', py_time)
-        print('nsols', nsols)
-        print('num_itr', num_itr)
-        print('p_sol', p_sol)
-        print('energy', energy)
-        print('nvars', nvars)        
-        print('- Solved - ', solved)
+    # dp = [9]
+    # dm = [4,3]
 
-        # Write sampleset and solutions to file
-        # f1 = open(f"{ruta}sp/{n}_sols_{ID}.txt", "w")
-        # for spl in sampleset:
-        #     f1.write(str(spl)+'\n')
-        # f1.close()
+    # dp = [11,2,8]
+    # dm = [-6]
 
-        # f22 = open(f"{ruta}sp/{n}_samplesetPD_{ID}.txt", "w")
-        # f22.write(df.to_string())
-        # f22.close()
+    # dp = [2,1,10,11]
+    # dm = [-4]
 
-        # f3 = open(f"{ruta}logs_vsH.txt", "a")
-        # f3.write(f'{n}-q; {d}-d config\n')
-        # f3.write(str(sample)+'\n')
-        # f3.write('py_time ' + str(py_time) + '\n')
-        # f3.write(str(sampleset.info)+'\n')
-        # f3.write('Solution - ' + solved + '\n\n')
-        # f3.close()
+    # dp = [11,2]
+    # dm = [6,-5,-6,4]
 
-        line = f'{n}   {d}   {nvars}   {num_itr}   {p_sol}   {sp_name}   '\
-               f'{py_time*10**3}   {energy}   {solved}\n'
-        f4 = open(f"{ruta}time.txt", "a")
-        f4.write(line)
-        f4.close()
+    # dp = [6,5,12]
+    # dm = [6,5,-4,-6]
 
-        # f2 = open(f"{ruta}sp/{n}_sampleset_{ID}.txt", "w")
-        # f2.write(str(sampleset))
-        # f2.close()
+    # dp = [1,2,12,10]
+    # dm = [2,-2,-6,6]
 
-        # file_name = plot_chessboard(n,sample,dp,dm,ruta)
-        # print("Chessboard created. See: {}".format(file_name))
+    print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
+    s,dp,dm = n_queens(n,dp,dm,itr,ruta)
+
+    if is_valid_solution(n,s):
+        write = "Solution - VALID"
+    else:
+        write = "Solution - NOT VALID"
+    print(write)
+
+    f = open(f"{ruta}logsQPU.txt", "a")
+    f.write(write +'\n\n')
+    f.close()
+
+    file_name = plot_chessboard(n,s,dp,dm,ruta)
+    print("Chessboard created. See: {}".format(file_name))
