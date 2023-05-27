@@ -1,0 +1,2 @@
+n	qpu_t	find_embedding_t	FixedEmbedding_t	num_qubits	topology
+4	1.501891851425171	0.30780601501464844	0.007478475570678711	67	chimera
