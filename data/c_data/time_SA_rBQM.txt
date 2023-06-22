@@ -1,0 +1,15 @@
+Notese que el nvars cambia conforme d cambia
+
+n   d   nvars   num_itr   p_sol   sp_name   py_time   energy   solution
+7   1   49   100   0.98   SimulatedAnnealingSampler   231.5969467163086   -14.0   YES
+4   1   16   100   1.0   SimulatedAnnealingSampler   56.702613830566406   -8.0   YES
+4   1   12   100   1.0   SimulatedAnnealingSampler   39.90340232849121   -8.0   YES
+4   3   9   100   0.0   SimulatedAnnealingSampler   31.716585159301758   -6.0   NO
+4   6   3   100   0.0   SimulatedAnnealingSampler   8.186817169189453   -2.0   NO
+4   7   0   100   0.0   SimulatedAnnealingSampler   2.450227737426758   0.0   NO
+4   2   9   100   0.0   SimulatedAnnealingSampler   28.090476989746094   -6.0   NO
+4   3   7   100   0.0   SimulatedAnnealingSampler   20.78986167907715   -6.0   NO
+4   5   5   100   0.0   SimulatedAnnealingSampler   14.40739631652832   -4.0   NO
+4   6   4   100   0.0   SimulatedAnnealingSampler   9.917974472045898   -4.0   NO
+4   7   3   100   0.0   SimulatedAnnealingSampler   9.359359741210938   -4.0   NO
+4   1   12   100   1.0   SimulatedAnnealingSampler   41.38898849487305   -8.0   YES
