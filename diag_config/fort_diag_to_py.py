@@ -1,15 +1,38 @@
 # D + needs to be reduced by 2
 # D - does not need conversion
 
+ndp = 8
+dp = '3          17           4          22           9          13          12          18          13          16           4           9          19          13          16           0           0'
 
-a = '8          19          16          22          -1         -17           3         -23          14           7         -15         -16          -8         -24           1           7          -9          18          23          21          23           1          12         -10          18           0           0           0           0           0           0           0'
-n = 12
+ndm = 9
+dm = '4          -4          -7         -10           9          -9           8          10           7          -1           2          -5           6          -5           5           0           0'
 
-a = a.split()[0:n]
-res = ','.join(a)
-print(res)
+dp = dp.split()[0:ndp]
+dp = [int(i) for i in dp]
+dp = [i-2 for i in dp]
 
-a = [35,32,42,18,39,50,45,33,28,9,46,6,3,8,17,4,43,7,44,2]
-b = [str(i-2) for i in a]
-b = ','.join(b)
-print(b)
+
+dm = dm.split()[0:ndm]
+dm = [int(i) for i in dm]
+
+print('dp', dp)
+print('dm', dm)
+
+
+# b = [str(i-2) for i in dp]
+# b = ','.join(b)
+# print(b)
+
+# dp = dp.split()[0:ndp]
+# # res = ','.join(dp)
+# # print(res)
+# dp = [int(x) for x in dp]
+# print(dp)
+
+# # dp = [16,10,9,2,8]
+# # b = [str(i-2) for i in dp]
+# dp = [i-2 for i in dp]
+# print(dm)
+# # b = [str(i-2) for i in dp]
+# # b = ','.join(b)
+# # print(b)
