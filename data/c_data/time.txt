@@ -1,0 +1,42 @@
+n   d   nvars   num_itr   p_sol   sp_name   py_time   energy   solution
+40   78   675   1   0.0   SimulatedAnnealingSampler   236.23991012573242   -72.0   NO
+40   78   675   100   0.0   SimulatedAnnealingSampler   9886.09766960144   -74.0   NO
+40   78   675   1000   0.003   SimulatedAnnealingSampler   97846.2119102478   -80.0   YES
+
+40   78   675   1   0.0   SimulatedAnnealingSampler   238.12222480773926   -74.0   NO
+40   78   675   1   0.0   SimulatedAnnealingSampler   265.38920402526855   -74.0   NO
+40   78   675   1   0.0   SimulatedAnnealingSampler   224.196195602417   -72.0   NO
+40   78   675   1   0.0   SimulatedAnnealingSampler   142.82703399658203   -72.0   NO
+40   78   675   1   0.0   SimulatedAnnealingSampler   148.46229553222656   -72.0   NO
+30   58   378   1   0.0   SimulatedAnnealingSampler   75.43134689331055   -54.0   NO
+30   58   378   1   0.0   SimulatedAnnealingSampler   59.84091758728027   -54.0   NO
+30   58   378   1   0.0   SimulatedAnnealingSampler   65.16170501708984   -54.0   NO
+30   58   378   1   0.0   SimulatedAnnealingSampler   65.4287338256836   -52.0   NO
+30   58   378   1   0.0   SimulatedAnnealingSampler   60.475826263427734   -54.0   NO
+20   38   168   1   0.0   SimulatedAnnealingSampler   31.210660934448242   -34.0   NO
+20   38   168   1   0.0   SimulatedAnnealingSampler   20.7979679107666   -36.0   NO
+20   38   168   1   1.0   SimulatedAnnealingSampler   22.588253021240234   -40.0   YES
+20   38   168   1   0.0   SimulatedAnnealingSampler   25.606870651245117   -36.0   NO
+20   38   168   1   1.0   SimulatedAnnealingSampler   35.410165786743164   -40.0   YES
+10   18   44   1   1.0   SimulatedAnnealingSampler   6.231546401977539   -20.0   YES
+10   18   44   1   1.0   SimulatedAnnealingSampler   6.068706512451172   -20.0   YES
+10   18   44   1   1.0   SimulatedAnnealingSampler   6.394386291503906   -20.0   YES
+10   18   44   1   1.0   SimulatedAnnealingSampler   7.1964263916015625   -20.0   YES
+10   18   44   1   1.0   SimulatedAnnealingSampler   6.015539169311523   -20.0   YES
+
+
+30   58   378   100   0.0   SimulatedAnnealingSampler   3004.8956871032715   -56.0   NO
+30   58   378   100   0.0   SimulatedAnnealingSampler   3019.2601680755615   -56.0   NO
+30   58   378   100   0.0   SimulatedAnnealingSampler   3037.1317863464355   -56.0   NO
+30   58   378   100   0.01   SimulatedAnnealingSampler   2964.9088382720947   -60.0   YES
+30   58   378   100   0.0   SimulatedAnnealingSampler   2938.037395477295   -56.0   NO
+
+30   58   378   1000   0.008   SimulatedAnnealingSampler   29516.546487808228   -60.0   YES
+30   58   378   1000   0.005   SimulatedAnnealingSampler   29261.5065574646   -60.0   YES
+30   58   378   1000   0.005   SimulatedAnnealingSampler   29254.07123565674   -60.0   YES
+
+50   98   1050   1000   0.0   SimulatedAnnealingSampler   111425.73356628418   -96.0   NO
+50   98   1050   1000   0.0   SimulatedAnnealingSampler   111942.11220741272   -96.0   NO
+50   98   1050   100   0.0   SimulatedAnnealingSampler   11017.228841781616   -94.0   NO
+50   98   1050   10   0.0   SimulatedAnnealingSampler   1208.8446617126465   -94.0   NO
+50   98   1050   10000   0.0   SimulatedAnnealingSampler   1154069.2629814148   -96.0   NO
