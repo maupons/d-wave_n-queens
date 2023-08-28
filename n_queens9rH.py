@@ -20,9 +20,7 @@
 # - block diagonals
 # - solution verifier
 # - draw board
-# 
-# - removed qubits for blocked diagonals
-# 
+# - Hybrid Solver
 
 from collections import Counter
 
@@ -30,15 +28,17 @@ import numpy as np
 import matplotlib
 matplotlib.use("agg")    # must select backend before importing pyplot
 import matplotlib.pyplot as plt
-from dimod import BinaryQuadraticModel, ExactSolver
-from dwave.samplers import SimulatedAnnealingSampler, SteepestDescentSolver \
-, TabuSampler, TreeDecompositionSolver, RandomSampler
+from dimod import BinaryQuadraticModel
+from dwave.system import LeapHybridSampler
+from dwave.system import DWaveSampler, EmbeddingComposite, FixedEmbeddingComposite
+import dwave.inspector
+import neal
 from time import time
 import sys
 import datetime as dt
 
 
-def n_queens(n,dp,dm,itr, sampler=None):
+def n_queens(n,dp,dm,ruta, sampler=None):
     """Returns a potential solution to the n-queens problem in a dictionary, where
     the keys are qubit id and value on or off
 
@@ -51,9 +51,13 @@ def n_queens(n,dp,dm,itr, sampler=None):
                  3) SimulatedAnnealingSampler
     """
 
-    # d = len(dp) + len(dm)
+    d = len(dp) + len(dm)
+
     bqm = BinaryQuadraticModel({}, {}, 0, 'BINARY')
+    # bqm.offset = 2*n
+    # itr = 500
     w = 2
+    # cs = 89
 
     for i in range(n**2):
         ri = i // n
@@ -76,33 +80,66 @@ def n_queens(n,dp,dm,itr, sampler=None):
                 bqm.add_interaction(i, j, w)
             if abs(ri-rj) == abs(ci-cj):
                 bqm.add_interaction(i, j, w)
-    # print(bqm)
-    # print('LINEAR')
-    # print(bqm.linear)
-    # print(len(bqm.linear))
-    # print('QUADRATIC')
-    # print(bqm.quadratic)
-    # print(len(bqm.quadratic))
 
-
-    print(f'Classical solver started with {itr} reads...')
+    print(f'Hybrid solver started ...')
     start_time = time()
 
-    # Exact Solver
-    # sampler = ExactSolver()
-    # sampleset = sampler.sample(bqm)
+    # Hybrid Solver
+    sampler = LeapHybridSampler()
+    sampleset = sampler.sample(bqm, label=f'H n {n}, time {start_time}')
+    # print('Sampler------------------------------\n',sampler)
+    # print('Sampler.properties-------------------\n',sampler.properties)
+    print('Sampleset----------------------------\n',sampleset)
+    print('Sampleset.info-----------------------\n',sampleset.info)
 
-    # Heuristic  Solvers
-    sampler = SimulatedAnnealingSampler()
-    # sampler = SteepestDescentSolver()
-    # sampler = TabuSampler()
-    # sampler = TreeDecompositionSolver()
-    # sampler = RandomSampler()
-    print(sampler)
-    sampleset = sampler.sample(bqm, num_reads=itr)
-
+    
     py_time = time()-start_time
-    return sampleset, sampler, py_time
+    print('py_time', py_time)
+    print('sampleset.done', sampleset.done())
+
+    # Extract run info
+    sample = sampleset.first.sample
+    nvars = len(sample)
+    qpu_access_time = sampleset.info['qpu_access_time']
+    charge_time = sampleset.info['charge_time']
+    run_time = sampleset.info['run_time']
+    df = sampleset.to_pandas_dataframe()
+    nsols = df[df["energy"] == -2*n]['num_occurrences'].sum()
+    energy = float(df["energy"])
+    # record = sampleset.record
+    print('nsols', nsols)
+    print('energy', energy)
+    print('nvars', nvars)
+    # print('record', record)
+
+    # f1 = open(f"{ruta}sp/{n}_sols_{start_time}.txt", "w")
+    # for spl in sampleset:
+    #     f1.write(str(spl)+'\n')
+    # f1.close()
+
+    # f2 = open(f"{ruta}sp/{n}_sampleset_{start_time}.txt", "w")
+    # f2.write(str(sampleset))
+    # f2.close()
+
+    
+    # f22 = open(f"{ruta}sp/{n}_samplesetPD_{start_time}.txt", "w")
+    # f22.write(df.to_string())
+    # f22.close()
+
+    f3 = open(f"{ruta}logs.txt", "a")
+    f3.write(f'{n}-q; {d}-d config\n')
+    # f3.write(str(sample)+'\n')
+    f3.write('py_time ' + str(py_time) + '\n')
+    f3.write(str(sampleset.info)+'\n')
+    f3.close()
+
+    f4 = open(f"{ruta}time.txt", "a")
+    line = f'{n}   {d}   {nvars}   {py_time*10**3}   {qpu_access_time*10**-3}   ' \
+           f'{charge_time*10**-3}   {run_time*10**-3}   {energy}   '
+    f4.write(line)
+    f4.close()
+
+    return sample,dp,dm
 
 
 def is_valid_solution(n, solution):
@@ -148,7 +185,7 @@ def is_valid_solution(n, solution):
     return True
 
 
-def plot_chessboard(n,queens, dp, dm, ruta):
+def plot_chessboard(n, s, dp, dm, ruta):
     """Create a chessboard with queens using matplotlib. Image is saved
     in the root directory. Returns the image file name.
     """
@@ -170,7 +207,7 @@ def plot_chessboard(n,queens, dp, dm, ruta):
     plt.imshow(chessboard, cmap='binary')
 
     # Place queens
-    for qb,v in queens.items():
+    for qb,v in s.items():
         y = qb // n
         x = qb-n*y
         if v:
@@ -212,34 +249,33 @@ def plot_chessboard(n,queens, dp, dm, ruta):
         else:
             plt.plot(dm_dict[e][0],dm_dict[e][1],'r')
 
+    d = len(dp) + len(dm)
     # Save file in root directory
-    file_name = f"{ruta}figs/{n}-queens-solution.png"
+    file_name = f"{ruta}figs/n{n}-d{d}queens-solution.png"
     plt.savefig(file_name)
 
     return file_name
 
 if __name__ == "__main__":
 
-    ruta = 'data/c_data/'
-    # n = int(sys.argv[1])
+    ruta = 'data/h_data/'
+
     n = 50
-    itr = 10000
+    # n = int(sys.argv[1])
+    dp = []
+    dm = []
 
     # n 10
     # dp = [0, 1, 3, 6, 8, 12, 16, 17, 18]
     # dm = [-9, -8, -7, -4, 0, 5, 6, 8, 9]
 
-    # n 11
-    # dp = [0, 1, 3, 6, 9, 12, 14, 16, 19, 20]
-    # dm = [-10, -9, -8, -7, -4, 5, 6, 8, 9, 10]
-
-    # n 12
-    # dp = [0, 1, 2, 7, 9, 10, 12, 18, 19, 21, 22]
-    # dm = [-11, -10, -8, -7, -6, -3, 7, 8, 9, 10, 11]
-
     # n 20
     # dp = [0, 1, 2, 3, 4, 5, 6, 15, 18, 23, 25, 26, 28, 29, 31, 34, 36, 37, 38]
     # dm = [-19, -18, -16, -15, -14, -13, -12, -9, -6, -4, 3, 11, 13, 14, 15, 16, 17, 18, 19]
+
+    # n 25
+    # dp = [33,30,40,16,37,48,43,31,26,7,44,4,1,6,15,2,41,5,42,0]
+    # dm = [8,19,16,22,-1,-17,3,-23,14,7,-15,-16]
 
     # n 30
     # dp = [0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 14, 19, 22, 23, 27, 33, 42, 43, 44, 45, 47, 50, 51, 53, 54, 55, 56, 57, 58]
@@ -262,67 +298,22 @@ if __name__ == "__main__":
     # dm = [-69, -68, -67, -66, -65, -64, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -48, -44, -43, -42, -41, -40, -38, -36, -35, -28, -27, -20, -17, -13, -10, -2, 11, 22, 25, 26, 34, 35, 36, 37, 38, 39, 40, 41, 43, 45, 46, 47, 48, 49, 50, 53, 54, 55, 56, 57, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69]
 
 
-    d = len(dp) + len(dm)
+    print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
+    s,dp,dm = n_queens(n,dp,dm,ruta)
 
-    for ix in range(1):
-        print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
-        sampleset, sampler, py_time = n_queens(n,dp,dm,itr)
+    if is_valid_solution(n, s):
+        valid = "YES"
+    else:
+        valid = "NO"
+    print('Solution - ', valid)
 
-        # Extract run info
-        sample = sampleset.first.sample
-        energy = sampleset.first.energy
-        num_itr = len(sampleset)
-        nvars = len(sample)
-        df = sampleset.to_pandas_dataframe()
-        nsols = df[df["energy"] == -2*n]['num_occurrences'].sum()
-        p_sol = psol = nsols / num_itr
-        sp_name = str(sampler).split(".")[4].split()[0]
-        ID = time()
-        
-        if is_valid_solution(n,sample):
-            solved = "YES"
-        else:
-            solved = "NO"
+    f = open(f"{ruta}logs.txt", "a")
+    f.write('Solution - ' + valid + '\n\n')
+    f.close()
 
-        # print('Solution\n', sample)
-        print('sampleset.info: ',sampleset.info)
-        print('sampler.properties: ',sampler.properties)
-        print('sampler',sp_name)
-        print('py_time', py_time)
-        print('nsols', nsols)
-        print('num_itr', num_itr)
-        print('p_sol', p_sol)
-        print('energy', energy)
-        print('nvars', nvars)        
-        print('- Solved - ', solved)
+    f2 = open(f"{ruta}time.txt", "a")
+    f2.write(valid +'\n')
+    f2.close()
 
-        # Write sampleset and solutions to file
-        # f1 = open(f"{ruta}sp/{n}_sols_{ID}.txt", "w")
-        # for spl in sampleset:
-        #     f1.write(str(spl)+'\n')
-        # f1.close()
-
-        # f22 = open(f"{ruta}sp/{n}_samplesetPD_{ID}.txt", "w")
-        # f22.write(df.to_string())
-        # f22.close()
-
-        # f3 = open(f"{ruta}logs_vsH.txt", "a")
-        # f3.write(f'{n}-q; {d}-d config\n')
-        # f3.write(str(sample)+'\n')
-        # f3.write('py_time ' + str(py_time) + '\n')
-        # f3.write(str(sampleset.info)+'\n')
-        # f3.write('Solution - ' + solved + '\n\n')
-        # f3.close()
-
-        line = f'{n}   {d}   {nvars}   {num_itr}   {p_sol}   {sp_name}   '\
-               f'{py_time*10**3}   {energy}   {solved}\n'
-        f4 = open(f"{ruta}time.txt", "a")
-        f4.write(line)
-        f4.close()
-
-        # f2 = open(f"{ruta}sp/{n}_sampleset_{ID}.txt", "w")
-        # f2.write(str(sampleset))
-        # f2.close()
-
-        # file_name = plot_chessboard(n,sample,dp,dm,ruta)
-        # print("Chessboard created. See: {}".format(file_name))
+    # file_name = plot_chessboard(n,s,dp,dm,ruta)
+    # print("Chessboard created. See: {}".format(file_name))

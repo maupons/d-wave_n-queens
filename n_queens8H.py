@@ -84,7 +84,7 @@ def n_queens(n,dp,dm,ruta, sampler=None):
 
     # Hybrid Solver
     sampler = LeapHybridSampler()
-    sampleset = sampler.sample(bqm, label=f'n {n}, time {start_time}')
+    sampleset = sampler.sample(bqm, label=f'H n {n}, time {start_time}')
     # print('Sampler------------------------------\n',sampler)
     # print('Sampler.properties-------------------\n',sampler.properties)
     print('Sampleset----------------------------\n',sampleset)
@@ -110,23 +110,23 @@ def n_queens(n,dp,dm,ruta, sampler=None):
     print('nvars', nvars)
     # print('record', record)
 
-    f1 = open(f"{ruta}sp/{n}_sols_{start_time}.txt", "w")
-    for spl in sampleset:
-        f1.write(str(spl)+'\n')
-    f1.close()
+    # f1 = open(f"{ruta}sp/{n}_sols_{start_time}.txt", "w")
+    # for spl in sampleset:
+    #     f1.write(str(spl)+'\n')
+    # f1.close()
 
-    f2 = open(f"{ruta}sp/{n}_sampleset_{start_time}.txt", "w")
-    f2.write(str(sampleset))
-    f2.close()
+    # f2 = open(f"{ruta}sp/{n}_sampleset_{start_time}.txt", "w")
+    # f2.write(str(sampleset))
+    # f2.close()
 
     
-    f22 = open(f"{ruta}sp/{n}_samplesetPD_{start_time}.txt", "w")
-    f22.write(df.to_string())
-    f22.close()
+    # f22 = open(f"{ruta}sp/{n}_samplesetPD_{start_time}.txt", "w")
+    # f22.write(df.to_string())
+    # f22.close()
 
     f3 = open(f"{ruta}logs.txt", "a")
     f3.write(f'{n}-q; {d}-d config\n')
-    f3.write(str(sample)+'\n')
+    # f3.write(str(sample)+'\n')
     f3.write('py_time ' + str(py_time) + '\n')
     f3.write(str(sampleset.info)+'\n')
     f3.close()
@@ -256,28 +256,60 @@ def plot_chessboard(n, queens, dp, dm):
 if __name__ == "__main__":
 
     ruta = 'data/h_data/'
-    n = int(sys.argv[1])
-    dp = []
-    dm = []
-    # n = 100
+
+    n = 70
+    # n = int(sys.argv[1])
+    # dp = []
+    # dm = []
+
+    # n 10
+    # dp = [0, 1, 3, 6, 8, 12, 16, 17, 18]
+    # dm = [-9, -8, -7, -4, 0, 5, 6, 8, 9]
+
+    # n 20
+    # dp = [0, 1, 2, 3, 4, 5, 6, 15, 18, 23, 25, 26, 28, 29, 31, 34, 36, 37, 38]
+    # dm = [-19, -18, -16, -15, -14, -13, -12, -9, -6, -4, 3, 11, 13, 14, 15, 16, 17, 18, 19]
+
+    # n 25
     # dp = [33,30,40,16,37,48,43,31,26,7,44,4,1,6,15,2,41,5,42,0]
     # dm = [8,19,16,22,-1,-17,3,-23,14,7,-15,-16]
+
+    # n 30
+    # dp = [0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 14, 19, 22, 23, 27, 33, 42, 43, 44, 45, 47, 50, 51, 53, 54, 55, 56, 57, 58]
+    # dm = [-29, -28, -27, -26, -25, -24, -22, -20, -19, -17, -15, -13, -11, -7, 3, 4, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 27, 28, 29]
+
+    # n 40
+    # dp = [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 14, 15, 16, 18, 20, 22, 26, 28, 30, 32, 45, 53, 54, 55, 59, 60, 63, 65, 66, 67, 69, 70, 71, 73, 74, 75, 76, 77, 78]
+    # dm = [-39, -38, -37, -35, -34, -33, -30, -29, -28, -27, -26, -24, -23, -22, -20, -16, -15, -14, -11, -8, -4, 2, 13, 21, 22, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]
+
+    # n 50
+    # dp = [0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 13, 14, 15, 17, 18, 20, 22, 23, 24, 26, 35, 40, 45, 53, 55, 58, 59, 67, 72, 73, 74, 77, 81, 82, 84, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98]
+    # dm = [-49, -48, -47, -46, -45, -44, -43, -42, -41, -40, -39, -38, -37, -35, -33, -27, -26, -25, -22, -20, -9, -8, -5, -3, -2, 0, 1, 11, 18, 22, 25, 27, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40, 42, 43, 44, 45, 47, 48, 49]
+
+    # n 60
+    # dp = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 15, 17, 18, 19, 20, 21, 22, 25, 27, 30, 31, 32, 33, 35, 36, 39, 41, 42, 43, 60, 72, 80, 81, 84, 85, 88, 93, 94, 95, 98, 99, 100, 101, 102, 103, 104, 105, 106, 108, 109, 110, 111, 112, 113, 114, 115, 117, 118]
+    # dm = [-59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49, -48, -47, -45, -44, -42, -41, -39, -38, -37, -35, -33, -28, -25, -23, -21, -7, -2, 1, 4, 6, 7, 10, 11, 23, 25, 26, 31, 35, 36, 38, 40, 41, 42, 43, 44, 46, 47, 48, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
+
+    # n 70
+    dp = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 21, 24, 25, 28, 30, 33, 37, 38, 40, 41, 45, 47, 53, 57, 60, 63, 65, 78, 86, 87, 90, 92, 94, 95, 97, 99, 103, 104, 106, 108, 110, 114, 116, 117, 119, 120, 122, 124, 125, 126, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138]
+    dm = [-69, -68, -67, -66, -65, -64, -63, -62, -61, -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -48, -44, -43, -42, -41, -40, -38, -36, -35, -28, -27, -20, -17, -13, -10, -2, 11, 22, 25, 26, 34, 35, 36, 37, 38, 39, 40, 41, 43, 45, 46, 47, 48, 49, 50, 53, 54, 55, 56, 57, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69]
+
 
     print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
     solution,dp,dm = n_queens(n,dp,dm,ruta)
 
     if is_valid_solution(n, solution):
-        write = "YES"
+        valid = "YES"
     else:
-        write = "NO"
-    print('Solution - ', write)
+        valid = "NO"
+    print('Solution - ', valid)
 
     f = open(f"{ruta}logs.txt", "a")
-    f.write('Solution - ' + write + '\n\n')
+    f.write('Solution - ' + valid + '\n\n')
     f.close()
 
     f2 = open(f"{ruta}time.txt", "a")
-    f2.write(write +'\n')
+    f2.write(valid +'\n')
     f2.close()
 
     # file_name = plot_chessboard(n, solution,dp,dm)

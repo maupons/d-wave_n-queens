@@ -115,18 +115,18 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     print('psol', psol)
     print('warnings', sampleset.info['warnings'])
 
-    f1 = open(f"{ruta}sp/{n}_sols_{start_time}.txt", "w")
-    for spl in sampleset:
-        f1.write(str(spl)+'\n')
-    f1.close()
+    # f1 = open(f"{ruta}sp/{n}_sols_{start_time}.txt", "w")
+    # for spl in sampleset:
+    #     f1.write(str(spl)+'\n')
+    # f1.close()
 
-    f2 = open(f"{ruta}sp/{n}_sampleset_{start_time}.txt", "w")
-    f2.write(str(sampleset))
-    f2.close()
+    # f2 = open(f"{ruta}sp/{n}_sampleset_{start_time}.txt", "w")
+    # f2.write(str(sampleset))
+    # f2.close()
 
-    f22 = open(f"{ruta}sp/{n}_samplesetPD_{start_time}.txt", "w")
-    f22.write(df.to_string())
-    f22.close()    
+    # f22 = open(f"{ruta}sp/{n}_samplesetPD_{start_time}.txt", "w")
+    # f22.write(df.to_string())
+    # f22.close()    
 
     f3 = open(f"{ruta}logsQPU.txt", "a")
     f3.write(f'{n}-q; {d}-d config\n')
@@ -148,7 +148,9 @@ def n_queens(n,dp,dm,itr,ruta, sampler=None):
     f4.write(line + '\n')
     f4.close()
     
-    dwave.inspector.show(sampleset)             # Show Dwave Inspector Tool
+    # print("Defualt Anneal:", qpu_advantage.properties["default_annealing_time"] )
+
+    # dwave.inspector.show(sampleset)             # Show Dwave Inspector Tool
     return sample,dp,dm
 
 
@@ -270,63 +272,47 @@ if __name__ == "__main__":
 
     ruta = 'data/q_data/'
     # n = int(sys.argv[1])
-    n = 11
-    itr = 3000
+    n = 10
+    itr = 10
 
     # dp = []
     # dm = []
 
+    # Diags n 4
+    # dp = [0, 3, 6]
+    # dm = [-3, 0, 3]
+    
+    # Diags n 5
+    # dp = [1, 2, 5, 8]
+    # dm = [-4, -3, 3, 4]
+
+    # Diags n 6
+    # dp = [0, 1, 5, 9, 10]
+    # dm = [-5, -3, 0, 3, 5]
+
     # Diags n 7
-    # dp = [9]
-    # dm = []
-
-    # dp = [11]
-    # dm = [3]
-
-    # dp = [9]
-    # dm = [4,3]
-
-    # dp = [11,2,8]
-    # dm = [-6]
-
-    # dp = [2,1,10,11]
-    # dm = [-4]
-
-    # dp = [11,2]
-    # dm = [6,-5,-6,4]
-
-    # dp = [6,5,12]
-    # dm = [6,5,-4,-6]
-
-    # dp = [1,2,12,10]
-    # dm = [2,-2,-6,6]
-
+    # dp = [0, 2, 3, 9, 10, 12]
+    # dm = [-6, -5, -2, 2, 5, 6]
 
     # Diags n 8
-    # dp = [14,8,7,0,6]
-    # dm = [7,-7,6,-6,5,-5]
-
+    # dp = [0, 1, 2, 9, 10, 13, 14]
+    # dm = [-7, -6, -3, 1, 2, 6, 7]
 
     # Diags n 9
-    # dp = [0, 12, 4, 16, 1, 15, 14]
-    # dm = [-7, 4, 0, -4, 1, 8]
-
+    # dp = [0, 2, 3, 4, 10, 14, 15, 16]
+    # dm = [-8, -7, -6, 0, 2, 4, 7, 8]
 
     # Diags n 10
-    # dp = [1, 3, 2, 12, 15, 0, 18]
-    # dm = [6, -8, 1, -7, 3, 7]
-
-    # dp = [18, 14, 3, 11, 12, 1, 0, 5]
-    # dm = [-9, -5, 4, -7, 8, 1]
-
-    # dp = [18, 16, 2, 0, 17, 7, 3]
-    # dm = [7, -7, -2, -8, 9, 8, 0, 2, -9]
-
+    dp = [0, 1, 3, 6, 8, 12, 16, 17, 18]
+    dm = [-9, -8, -7, -4, 0, 5, 6, 8, 9]
 
     # Diags n 11
-    dp = [1, 15, 2, 20, 7, 11, 10, 16]
-    dm = [4, -4, -7, -10, 9, -9, 8, 10, 7]
-    
+    # dp = [0, 1, 3, 6, 9, 12, 14, 16, 19, 20]
+    # dm = [-10, -9, -8, -7, -4, 5, 6, 8, 9, 10]
+
+    # Diags n 12
+    # dp = [0, 1, 2, 7, 9, 10, 12, 18, 19, 21, 22]
+    # dm = [-11, -10, -8, -7, -6, -3, 7, 8, 9, 10, 11]
 
 
     print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
