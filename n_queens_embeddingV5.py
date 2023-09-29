@@ -93,12 +93,12 @@ def n_queens(n,n_emb,tp):
 if __name__ == "__main__":
 
     tick = time()
-    n = int(sys.argv[1])
-    # n = 5
-    n_emb = 1000
+    # n = int(sys.argv[1])
+    n = 5
+    n_emb = 10
 
-    tp = 'chimera'
-    # tp = 'pegasus'
+    # tp = 'chimera'
+    tp = 'pegasus'
     # tp = 'zephyr'
     
     print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
