@@ -336,3 +336,293 @@ py_time 6.468861103057861
 {'qpu_access_time': 36763, 'charge_time': 3043507, 'run_time': 3043507, 'problem_id': '46d2e0bb-44b2-4107-8dcc-e95e2588555e', 'problem_label': 'H n 50, time 1692652068.9554834'}
 Solution - NO
 
+10-q; 0-d config
+py_time 8.438295602798462
+{'qpu_access_time': 120791, 'charge_time': 2989173, 'run_time': 2989173, 'problem_id': '1137b84f-339f-4bda-aec0-0c86ad41cb21', 'problem_label': 'H n 10, time 1696016818.5257628'}
+Solution - YES
+
+10-q; 0-d config
+py_time 6.482471704483032
+{'qpu_access_time': 157609, 'charge_time': 2995960, 'run_time': 2995960, 'problem_id': '5d5eb4e4-b72f-4009-bc16-aae9738c954a', 'problem_label': 'H n 10, time 1696016870.9296982'}
+Solution - YES
+
+10-q; 0-d config
+py_time 8.000684261322021
+{'qpu_access_time': 144538, 'charge_time': 2990539, 'run_time': 2990539, 'problem_id': '63a97428-6afb-4b1c-93cd-1943a814a56b', 'problem_label': 'H n 10, time 1696016887.7714324'}
+Solution - YES
+
+10-q; 0-d config
+py_time 8.76127552986145
+{'qpu_access_time': 120973, 'charge_time': 2994499, 'run_time': 2994499, 'problem_id': '5834875e-3a01-4f21-883c-d3607152d988', 'problem_label': 'H n 10, time 1696016906.5483344'}
+Solution - YES
+
+10-q; 0-d config
+py_time 8.46481990814209
+{'qpu_access_time': 139328, 'charge_time': 2995129, 'run_time': 2995129, 'problem_id': '34be5041-29ed-452a-8eba-c8c1f2c2f6ad', 'problem_label': 'H n 10, time 1696016957.5847578'}
+Solution - YES
+
+20-q; 0-d config
+py_time 8.465793371200562
+{'qpu_access_time': 42738, 'charge_time': 2999977, 'run_time': 2999977, 'problem_id': '051891c6-d31c-47ef-99e9-747726ebcc32', 'problem_label': 'H n 20, time 1696016992.860463'}
+Solution - YES
+
+20-q; 0-d config
+py_time 7.913799047470093
+{'qpu_access_time': 42749, 'charge_time': 2992216, 'run_time': 2992216, 'problem_id': '37ce2e2d-9251-4c94-8fbb-9ab0b0c75528', 'problem_label': 'H n 20, time 1696017001.847206'}
+Solution - YES
+
+20-q; 0-d config
+py_time 8.523504972457886
+{'qpu_access_time': 42737, 'charge_time': 2988424, 'run_time': 2988424, 'problem_id': '136974f0-8a64-4d0c-a8f7-04aa3d3c04a7', 'problem_label': 'H n 20, time 1696017009.8669457'}
+Solution - YES
+
+20-q; 0-d config
+py_time 68.21290159225464
+{'qpu_access_time': 42714, 'charge_time': 2998121, 'run_time': 2998121, 'problem_id': '80ad680b-8972-4ef0-b033-31ca729f1366', 'problem_label': 'H n 20, time 1696017018.5065567'}
+Solution - YES
+
+20-q; 0-d config
+py_time 8.224778890609741
+{'qpu_access_time': 42740, 'charge_time': 2999351, 'run_time': 2999351, 'problem_id': '828506f9-fcc3-4ffc-be6f-361354fc2fa5', 'problem_label': 'H n 20, time 1696017086.8278182'}
+Solution - YES
+
+30-q; 0-d config
+py_time 8.879911184310913
+{'qpu_access_time': 41851, 'charge_time': 2990838, 'run_time': 2990838, 'problem_id': '0baf72c2-467b-4b13-bf69-38c3cd694691', 'problem_label': 'H n 30, time 1696017123.970612'}
+Solution - YES
+
+30-q; 0-d config
+py_time 8.316820621490479
+{'qpu_access_time': 0, 'charge_time': 2991176, 'run_time': 2991176, 'problem_id': 'bbeafd7f-3ece-4f55-b946-e7ad8cbe9755', 'problem_label': 'H n 30, time 1696017133.7721915'}
+Solution - YES
+
+30-q; 0-d config
+py_time 7.877832651138306
+{'qpu_access_time': 42740, 'charge_time': 2988602, 'run_time': 2988602, 'problem_id': 'ae5d60e5-ebde-4a24-a232-74d99bf6385d', 'problem_label': 'H n 30, time 1696017142.589349'}
+Solution - YES
+
+30-q; 0-d config
+py_time 8.075212717056274
+{'qpu_access_time': 42747, 'charge_time': 3000000, 'run_time': 3000082, 'problem_id': 'efb4d355-5c42-4778-8a9f-3c5fddac17da', 'problem_label': 'H n 30, time 1696017150.987618'}
+Solution - YES
+
+30-q; 0-d config
+py_time 8.109933853149414
+{'qpu_access_time': 42082, 'charge_time': 2995494, 'run_time': 2995494, 'problem_id': 'ade30eaf-dee6-44fa-8c44-087cc615486a', 'problem_label': 'H n 30, time 1696017159.5772648'}
+Solution - YES
+
+40-q; 0-d config
+py_time 10.260158777236938
+{'qpu_access_time': 42736, 'charge_time': 4310613, 'run_time': 4310613, 'problem_id': 'ec67a8e8-d3e1-45c7-aac8-d38a4cfbc34e', 'problem_label': 'H n 40, time 1696017488.7668188'}
+Solution - YES
+
+40-q; 0-d config
+py_time 9.757062911987305
+{'qpu_access_time': 42742, 'charge_time': 4305518, 'run_time': 4305518, 'problem_id': '7eb83619-6dd9-4140-bc0d-a10001da6e87', 'problem_label': 'H n 40, time 1696017501.0135386'}
+Solution - YES
+
+40-q; 0-d config
+py_time 9.676844835281372
+{'qpu_access_time': 42739, 'charge_time': 4312500, 'run_time': 4313339, 'problem_id': '1c1b45c0-ef33-40f4-96c8-918fb4b5c11d', 'problem_label': 'H n 40, time 1696017512.286206'}
+Solution - YES
+
+40-q; 0-d config
+py_time 9.618387460708618
+{'qpu_access_time': 42739, 'charge_time': 4304573, 'run_time': 4304573, 'problem_id': '374a5639-7e34-4c1e-9f12-729dc26d48cf', 'problem_label': 'H n 40, time 1696017523.4877553'}
+Solution - YES
+
+40-q; 0-d config
+py_time 9.559342384338379
+{'qpu_access_time': 42745, 'charge_time': 4310598, 'run_time': 4310598, 'problem_id': '0a0a22db-db0e-450b-ba37-14ced4c9ed00', 'problem_label': 'H n 40, time 1696017534.609364'}
+Solution - YES
+
+50-q; 0-d config
+py_time 12.16546368598938
+{'qpu_access_time': 42744, 'charge_time': 6363281, 'run_time': 6365174, 'problem_id': '2b85779b-443b-4049-9447-5fabf4a6ea4d', 'problem_label': 'H n 50, time 1696017593.780953'}
+Solution - YES
+
+50-q; 0-d config
+py_time 11.861994743347168
+{'qpu_access_time': 42719, 'charge_time': 6351302, 'run_time': 6351302, 'problem_id': 'cf4b5249-bffb-43aa-9548-ec559eda37a2', 'problem_label': 'H n 50, time 1696017610.4020765'}
+Solution - YES
+
+50-q; 0-d config
+py_time 12.085750818252563
+{'qpu_access_time': 85481, 'charge_time': 6354104, 'run_time': 6354104, 'problem_id': '6e1ab791-b4a8-4782-9df5-0b774dab1594', 'problem_label': 'H n 50, time 1696017626.173852'}
+Solution - YES
+
+50-q; 0-d config
+py_time 9.565248489379883
+{'qpu_access_time': 42744, 'charge_time': 6354459, 'run_time': 6354459, 'problem_id': '55fd3f91-e7ed-4b7f-8e33-ee4e42c6fcdf', 'problem_label': 'H n 50, time 1696017642.2924802'}
+Solution - YES
+
+50-q; 0-d config
+py_time 72.12528944015503
+{'qpu_access_time': 42739, 'charge_time': 6355843, 'run_time': 6355843, 'problem_id': '5281a45d-2ebd-4e6d-8bc0-6f7848f5e4d6', 'problem_label': 'H n 50, time 1696017655.7768335'}
+Solution - YES
+
+60-q; 0-d config
+py_time 15.023005247116089
+{'qpu_access_time': 85480, 'charge_time': 8860071, 'run_time': 8860071, 'problem_id': 'e97601a4-3d09-48d9-b257-cf224bd53634', 'problem_label': 'H n 60, time 1696024344.9168751'}
+Solution - YES
+
+60-q; 0-d config
+py_time 12.39005184173584
+{'qpu_access_time': 85483, 'charge_time': 8869791, 'run_time': 8872533, 'problem_id': 'd78f0525-8175-4923-8ecd-22f8dead350c', 'problem_label': 'H n 60, time 1696024368.2614658'}
+Solution - YES
+
+60-q; 0-d config
+py_time 12.258157968521118
+{'qpu_access_time': 85486, 'charge_time': 8869791, 'run_time': 8871480, 'problem_id': '0fe60383-2afe-4443-9b53-60876d3d4e3c', 'problem_label': 'H n 60, time 1696024388.5226977'}
+Solution - YES
+
+60-q; 0-d config
+py_time 12.097669124603271
+{'qpu_access_time': 85462, 'charge_time': 8869791, 'run_time': 8874033, 'problem_id': 'aeee586b-8ec9-4980-82fe-c6f30422b369', 'problem_label': 'H n 60, time 1696024408.56864'}
+Solution - NO
+
+60-q; 0-d config
+py_time 14.816079139709473
+{'qpu_access_time': 85487, 'charge_time': 8860914, 'run_time': 8860914, 'problem_id': '8ec038d0-930a-46a5-a1d0-4d4d06d1726f', 'problem_label': 'H n 60, time 1696024428.259028'}
+Solution - YES
+
+60-q; 0-d config
+py_time 12.47320032119751
+{'qpu_access_time': 85486, 'charge_time': 8869791, 'run_time': 8870997, 'problem_id': 'edcf089f-e449-42a0-9789-7cf7acd15748', 'problem_label': 'H n 60, time 1696025125.5079243'}
+Solution - YES
+
+70-q; 0-d config
+py_time 21.868881702423096
+{'qpu_access_time': 128159, 'charge_time': 14078725, 'run_time': 14078725, 'problem_id': 'e10050d8-65ba-4193-80f8-e686710685fe', 'problem_label': 'H n 70, time 1696025370.9462976'}
+Solution - YES
+
+70-q; 0-d config
+py_time 17.416932821273804
+{'qpu_access_time': 128156, 'charge_time': 14083688, 'run_time': 14083688, 'problem_id': '1a3a9351-c03c-4520-8b50-09b93a94205f', 'problem_label': 'H n 70, time 1696025407.613354'}
+Solution - YES
+
+70-q; 0-d config
+py_time 19.899951457977295
+{'qpu_access_time': 128163, 'charge_time': 14065204, 'run_time': 14065204, 'problem_id': '69aaa728-160a-44e8-9f2b-74950228fe35', 'problem_label': 'H n 70, time 1696025439.233131'}
+Solution - YES
+
+70-q; 0-d config
+py_time 17.834545612335205
+{'qpu_access_time': 128169, 'charge_time': 14067047, 'run_time': 14067047, 'problem_id': '33890b45-9612-4ef6-8c98-e11c6b76ba8d', 'problem_label': 'H n 70, time 1696025472.9363143'}
+Solution - YES
+
+70-q; 0-d config
+py_time 19.954572916030884
+{'qpu_access_time': 128157, 'charge_time': 14084230, 'run_time': 14084230, 'problem_id': '29707813-46d0-4769-9cb6-a8a865ed4679', 'problem_label': 'H n 70, time 1696025504.744924'}
+Solution - YES
+
+80-q; 0-d config
+py_time 29.27348804473877
+{'qpu_access_time': 128163, 'charge_time': 21702152, 'run_time': 21702152, 'problem_id': '2825f0aa-e71f-41ca-a947-e8709bfdb284', 'problem_label': 'H n 80, time 1696025744.5815005'}
+Solution - YES
+
+80-q; 0-d config
+py_time 27.70078420639038
+{'qpu_access_time': 128159, 'charge_time': 21704553, 'run_time': 21704553, 'problem_id': '26935e4d-0997-4d0a-8bb0-ed1aa9dca5dc', 'problem_label': 'H n 80, time 1696025798.71977'}
+Solution - YES
+
+80-q; 0-d config
+py_time 27.073498964309692
+{'qpu_access_time': 128170, 'charge_time': 21681017, 'run_time': 21681017, 'problem_id': '212c2c35-3b09-4b11-ac65-1753b6fe2dec', 'problem_label': 'H n 80, time 1696025850.9962344'}
+Solution - YES
+
+80-q; 0-d config
+py_time 27.586477279663086
+{'qpu_access_time': 128151, 'charge_time': 21703233, 'run_time': 21703233, 'problem_id': '98b08504-dc64-4a48-847b-04a199172d3f', 'problem_label': 'H n 80, time 1696025902.6096723'}
+Solution - YES
+
+80-q; 0-d config
+py_time 27.865558624267578
+{'qpu_access_time': 128159, 'charge_time': 21690186, 'run_time': 21690186, 'problem_id': '38d512fd-0011-4d67-95ec-c59b67432a80', 'problem_label': 'H n 80, time 1696025953.8534544'}
+Solution - YES
+
+90-q; 0-d config
+py_time 37.01577544212341
+{'qpu_access_time': 128156, 'charge_time': 30342894, 'run_time': 30342894, 'problem_id': '202f9721-90a4-49c5-b122-e1b1e3247a22', 'problem_label': 'H n 90, time 1696026227.12471'}
+Solution - YES
+
+90-q; 0-d config
+py_time 40.81738781929016
+{'qpu_access_time': 128158, 'charge_time': 30294312, 'run_time': 30294312, 'problem_id': '1038940f-5ec3-4902-a3ca-ca87c08fc11c', 'problem_label': 'H n 90, time 1696026304.120674'}
+Solution - YES
+
+90-q; 0-d config
+py_time 40.699700355529785
+{'qpu_access_time': 128157, 'charge_time': 30319420, 'run_time': 30319420, 'problem_id': '637f001b-8c26-4261-800d-460a428386ac', 'problem_label': 'H n 90, time 1696026384.3689415'}
+Solution - YES
+
+90-q; 0-d config
+py_time 40.67092227935791
+{'qpu_access_time': 128157, 'charge_time': 30343587, 'run_time': 30343587, 'problem_id': '313f7b0b-4db9-4874-95cb-389e354c3bc6', 'problem_label': 'H n 90, time 1696026462.914105'}
+Solution - NO
+
+90-q; 0-d config
+py_time 41.07089042663574
+{'qpu_access_time': 128156, 'charge_time': 30310971, 'run_time': 30310971, 'problem_id': '55bdf9db-0304-41fe-a6ec-d6fddf5d1ab2', 'problem_label': 'H n 90, time 1696026541.499153'}
+Solution - YES
+
+90-q; 0-d config
+py_time 36.17061805725098
+{'qpu_access_time': 128157, 'charge_time': 30344825, 'run_time': 30344825, 'problem_id': '544a6dd5-3f41-445e-b0ac-23381871d7db', 'problem_label': 'H n 90, time 1696033992.326393'}
+Solution - YES
+
+100-q; 0-d config
+py_time 48.24124050140381
+{'qpu_access_time': 213589, 'charge_time': 39982593, 'run_time': 39982593, 'problem_id': 'a7938d8e-2fbd-4058-810b-59c973a3a201', 'problem_label': 'H n 100, time 1696034145.5468566'}
+Solution - NO
+
+100-q; 0-d config
+py_time 47.94263744354248
+{'qpu_access_time': 213598, 'charge_time': 39945366, 'run_time': 39945366, 'problem_id': 'ae749d0c-d24c-4ce3-84cd-e3c6752712f0', 'problem_label': 'H n 100, time 1696034359.2820745'}
+Solution - YES
+
+100-q; 0-d config
+py_time 48.552186727523804
+{'qpu_access_time': 213593, 'charge_time': 39998829, 'run_time': 39998829, 'problem_id': '0ee2e521-cd81-480a-a7a3-06ea6300e8d7', 'problem_label': 'H n 100, time 1696034585.816299'}
+Solution - YES
+
+100-q; 0-d config
+py_time 49.831671953201294
+{'qpu_access_time': 213589, 'charge_time': 39997111, 'run_time': 39997111, 'problem_id': '5b13e3e7-2ea0-4877-9429-e2a9b64c42ce', 'problem_label': 'H n 100, time 1696265409.130052'}
+Solution - NO
+
+100-q; 0-d config
+py_time 48.45423626899719
+{'qpu_access_time': 213596, 'charge_time': 39957402, 'run_time': 39957402, 'problem_id': '5b2f6c3d-c691-4579-8a92-c567b8eca410', 'problem_label': 'H n 100, time 1696265580.9671242'}
+Solution - YES
+
+100-q; 0-d config
+py_time 48.08719229698181
+{'qpu_access_time': 213596, 'charge_time': 39940216, 'run_time': 39940216, 'problem_id': '8a79f5c0-0f64-431d-8d2e-1366f9499cb9', 'problem_label': 'H n 100, time 1696265876.0976164'}
+Solution - YES
+
+100-q; 0-d config
+py_time 68.76316714286804
+{'qpu_access_time': 213605, 'charge_time': 40000000, 'run_time': 40009672, 'problem_id': '639402b0-bdef-4831-aa16-2cbc9b5ca682', 'problem_label': 'H n 100, time 1696266046.232454'}
+Solution - NO
+
+100-q; 0-d config
+py_time 48.62582182884216
+{'qpu_access_time': 213586, 'charge_time': 40000000, 'run_time': 40010645, 'problem_id': 'c75fe593-ef76-496f-b007-b411376d75fc', 'problem_label': 'H n 100, time 1696266240.8127656'}
+Solution - NO
+
+100-q; 0-d config
+py_time 47.847748041152954
+{'qpu_access_time': 213600, 'charge_time': 39956472, 'run_time': 39956472, 'problem_id': '2766b056-586f-4261-8a45-754adc87ddc2', 'problem_label': 'H n 100, time 1696266380.0808797'}
+Solution - NO
+
+100-q; 0-d config
+py_time 48.46492624282837
+{'qpu_access_time': 213603, 'charge_time': 40000000, 'run_time': 40022467, 'problem_id': 'ed21f53e-6db3-4842-9f68-e841ae528fef', 'problem_label': 'H n 100, time 1696267232.1039124'}
+Solution - NO
+
+100-q; 0-d config
+py_time 49.57077217102051
+{'qpu_access_time': 213601, 'charge_time': 39989274, 'run_time': 39989274, 'problem_id': '80a36f64-1ff8-453a-b0b3-5dc009aa61bd', 'problem_label': 'H n 100, time 1696272699.5715957'}
+Solution - YES
+
