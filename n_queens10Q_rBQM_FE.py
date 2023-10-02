@@ -279,15 +279,15 @@ if __name__ == "__main__":
 
     ruta = 'data/q_data/'
     # n = int(sys.argv[1])
-    n = 4
+    n = 8
     itr = 1000
 
-    # dp = []
-    # dm = []
+    dp = []
+    dm = []
 
     # Diags n 4
-    dp = [0, 3, 6]
-    dm = [-3, 0, 3]
+    # dp = [0, 3, 6]
+    # dm = [-3, 0, 3]
     
     # Diags n 5
     # dp = [1, 2, 5, 8]
@@ -321,19 +321,19 @@ if __name__ == "__main__":
     # dp = [0, 1, 2, 7, 9, 10, 12, 18, 19, 21, 22]
     # dm = [-11, -10, -8, -7, -6, -3, 7, 8, 9, 10, 11]
 
+    for i in range(2):
+        print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
+        s,dp,dm = n_queens(n,dp,dm,itr,ruta)
 
-    print("Trying to place {n} queens on a {n}*{n} chessboard.".format(n=n))
-    s,dp,dm = n_queens(n,dp,dm,itr,ruta)
+        if is_valid_solution(n,s):
+            write = "Solution - VALID"
+        else:
+            write = "Solution - NOT VALID"
+        print(write)
 
-    if is_valid_solution(n,s):
-        write = "Solution - VALID"
-    else:
-        write = "Solution - NOT VALID"
-    print(write)
+        f = open(f"{ruta}logsQPU.txt", "a")
+        f.write(write +'\n\n')
+        f.close()
 
-    f = open(f"{ruta}logsQPU.txt", "a")
-    f.write(write +'\n\n')
-    f.close()
-
-    # file_name = plot_chessboard(n,s,dp,dm,ruta)
-    # print("Chessboard created. See: {}".format(file_name))
+        # file_name = plot_chessboard(n,s,dp,dm,ruta)
+        # print("Chessboard created. See: {}".format(file_name))
