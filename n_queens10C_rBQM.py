@@ -223,7 +223,7 @@ if __name__ == "__main__":
     ruta = 'data/c_data/'
     # n = int(sys.argv[1])
     n = 50
-    itr = 10000
+    itr = 30000
 
     # n 10
     # dp = [0, 1, 3, 6, 8, 12, 16, 17, 18]

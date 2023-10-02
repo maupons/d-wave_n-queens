@@ -40,3 +40,97 @@ n   d   nvars   num_itr   p_sol   sp_name   py_time   energy   solution
 50   98   1050   100   0.0   SimulatedAnnealingSampler   11017.228841781616   -94.0   NO
 50   98   1050   10   0.0   SimulatedAnnealingSampler   1208.8446617126465   -94.0   NO
 50   98   1050   10000   0.0   SimulatedAnnealingSampler   1154069.2629814148   -96.0   NO
+
+30   58   378   500   0.012   SimulatedAnnealingSampler   15586.127281188965   -60.0   YES
+30   58   378   300   0.01   SimulatedAnnealingSampler   8448.11987876892   -60.0   YES
+30   58   378   200   0.0   SimulatedAnnealingSampler   5707.7343463897705   -56.0   NO
+30   58   378   200   0.0   SimulatedAnnealingSampler   5546.518802642822   -56.0   NO
+
+30   58   378   300   0.006666666666666667   SimulatedAnnealingSampler   8373.412132263184   -60.0   YES
+30   58   378   300   0.006666666666666667   SimulatedAnnealingSampler   8427.558660507202   -60.0   YES
+30   58   378   300   0.0   SimulatedAnnealingSampler   8306.506156921387   -56.0   NO
+30   58   378   400   0.0   SimulatedAnnealingSampler   11421.438932418823   -56.0   NO
+
+30   58   378   500   0.008   SimulatedAnnealingSampler   14132.908821105957   -60.0   YES
+30   58   378   500   0.002   SimulatedAnnealingSampler   13813.808679580688   -60.0   YES
+30   58   378   500   0.006   SimulatedAnnealingSampler   13713.600873947144   -60.0   YES
+30   58   378   500   0.008   SimulatedAnnealingSampler   13840.37971496582   -60.0   YES
+30   58   378   500   0.006   SimulatedAnnealingSampler   13747.833967208862   -60.0   YES
+
+40   78   675   500   0.0   SimulatedAnnealingSampler   30132.815837860107   -76.0   NO
+40   78   675   1000   0.0   SimulatedAnnealingSampler   59891.740560531616   -76.0   NO
+
+40   78   675   3000   0.0003333333333333333   SimulatedAnnealingSampler   179938.6441707611   -80.0   YES
+40   78   675   3000   0.0   SimulatedAnnealingSampler   183178.69472503662   -76.0   NO
+
+40   78   675   6000   0.001   SimulatedAnnealingSampler   368853.29151153564   -80.0   YES
+40   78   675   6000   0.0005   SimulatedAnnealingSampler   357897.5455760956   -80.0   YES
+40   78   675   5000   0.001   SimulatedAnnealingSampler   358435.3485107422   -80.0   YES
+
+40   78   675   4000   0.00075   SimulatedAnnealingSampler   245995.9864616394   -80.0   YES
+40   78   675   4000   0.0005   SimulatedAnnealingSampler   249314.66722488403   -80.0   YES
+40   78   675   4000   0.00125   SimulatedAnnealingSampler   239841.88389778137   -80.0   YES
+40   78   675   4000   0.00075   SimulatedAnnealingSampler   239478.6298274994   -80.0   YES
+40   78   675   4000   0.00075   SimulatedAnnealingSampler   249409.64794158936   -80.0   YES
+
+40   78   675   3000   0.0006666666666666666   SimulatedAnnealingSampler   181831.82668685913   -80.0   YES
+40   78   675   3000   0.0013333333333333333   SimulatedAnnealingSampler   184948.17876815796   -80.0   YES
+40   78   675   3000   0.001   SimulatedAnnealingSampler   186544.82674598694   -80.0   YES
+40   78   675   3000   0.0   SimulatedAnnealingSampler   177929.16345596313   -76.0   NO
+
+20   38   168   100   0.07   SimulatedAnnealingSampler   1085.0112438201904   -40.0   YES
+20   38   168   100   0.14   SimulatedAnnealingSampler   981.9717407226562   -40.0   YES
+20   38   168   100   0.22   SimulatedAnnealingSampler   990.2474880218506   -40.0   YES
+20   38   168   10   0.0   SimulatedAnnealingSampler   113.64531517028809   -36.0   NO
+20   38   168   50   0.22   SimulatedAnnealingSampler   494.47154998779297   -40.0   YES
+20   38   168   50   0.16   SimulatedAnnealingSampler   497.2968101501465   -40.0   YES
+20   38   168   50   0.08   SimulatedAnnealingSampler   483.7977886199951   -40.0   YES
+20   38   168   50   0.16   SimulatedAnnealingSampler   506.8397521972656   -40.0   YES
+20   38   168   50   0.16   SimulatedAnnealingSampler   495.5437183380127   -40.0   YES
+20   38   168   15   0.0   SimulatedAnnealingSampler   321.92325592041016   -36.0   NO
+
+
+40   78   675   4000   0.00075   SimulatedAnnealingSampler   245995.9864616394   -80.0   YES
+40   78   675   4000   0.0005   SimulatedAnnealingSampler   249314.66722488403   -80.0   YES
+40   78   675   4000   0.00125   SimulatedAnnealingSampler   239841.88389778137   -80.0   YES
+40   78   675   4000   0.00075   SimulatedAnnealingSampler   239478.6298274994   -80.0   YES
+40   78   675   4000   0.00075   SimulatedAnnealingSampler   249409.64794158936   -80.0   YES
+
+30   58   378   500   0.008   SimulatedAnnealingSampler   14132.908821105957   -60.0   YES
+30   58   378   500   0.002   SimulatedAnnealingSampler   13813.808679580688   -60.0   YES
+30   58   378   500   0.006   SimulatedAnnealingSampler   13713.600873947144   -60.0   YES
+30   58   378   500   0.008   SimulatedAnnealingSampler   13840.37971496582   -60.0   YES
+30   58   378   500   0.006   SimulatedAnnealingSampler   13747.833967208862   -60.0   YES
+
+20   38   168   20   0.25   SimulatedAnnealingSampler   205.596923828125   -40.0   YES
+20   38   168   20   0.1   SimulatedAnnealingSampler   339.4742012023926   -40.0   YES
+20   38   168   20   0.05   SimulatedAnnealingSampler   384.13071632385254   -40.0   YES
+20   38   168   20   0.2   SimulatedAnnealingSampler   366.316556930542   -40.0   YES
+20   38   168   20   0.15   SimulatedAnnealingSampler   354.16436195373535   -40.0   YES
+
+10   18   44   1   1.0   SimulatedAnnealingSampler   6.609678268432617   -20.0   YES
+10   18   44   1   1.0   SimulatedAnnealingSampler   5.263566970825195   -20.0   YES
+10   18   44   1   1.0   SimulatedAnnealingSampler   5.145072937011719   -20.0   YES
+10   18   44   1   1.0   SimulatedAnnealingSampler   5.420684814453125   -20.0   YES
+10   18   44   1   1.0   SimulatedAnnealingSampler   5.357980728149414   -20.0   YES
+
+
+50   98   1050   10000   0.0001   SimulatedAnnealingSampler   1075782.2875976562   -100.0   YES
+50   98   1050   10000   0.0   SimulatedAnnealingSampler   1233299.5076179504   -96.0   NO
+50   98   1050   10000   0.0001   SimulatedAnnealingSampler   1328855.2029132843   -100.0   YES
+50   98   1050   10000   0.0   SimulatedAnnealingSampler   1134501.9471645355   -96.0   NO
+50   98   1050   10000   0.0   SimulatedAnnealingSampler   1154255.7837963104   -96.0   NO
+50   98   1050   10000   0.0   SimulatedAnnealingSampler   1156012.4099254608   -96.0   NO
+
+
+50   98   1050   50000   0.0001   SimulatedAnnealingSampler   5416321.567296982   -100.0   YES
+
+
+50   98   1050   20000   0.0   SimulatedAnnealingSampler   2148522.0975875854   -96.0   NO
+
+
+50   98   1050   30000   6.666666666666667e-05   SimulatedAnnealingSampler   3215147.404909134   -100.0   YES
+50   98   1050   30000   3.3333333333333335e-05   SimulatedAnnealingSampler   3245868.905067444   -100.0   YES
+50   98   1050   30000   3.3333333333333335e-05   SimulatedAnnealingSampler   3248525.3036022186   -100.0   YES
+50   98   1050   30000   0.00013333333333333334   SimulatedAnnealingSampler   3334675.3482818604   -100.0   YES
+50   98   1050   30000   3.3333333333333335e-05   SimulatedAnnealingSampler   3256215.9798145294   -100.0   YES
